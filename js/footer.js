@@ -11,5 +11,5 @@ document.write("<div>");
 document.write("</div>");
 
 document.write("<div class=\"copyright\">");
-    document.write("Copyright © 2014 BY Wenhuix | Email:<a href=\"mailto:xiangwenhui@gmail.com\" class=\"email\">littlewest@foxmail.com</a>");
+    document.write("Copyright © 2014 BY Wenhuix | Email:<a href=\"mailto:littlewest@foxmail.com\" class=\"email\">littlewest@foxmail.com</a>");
 document.write("</div>");

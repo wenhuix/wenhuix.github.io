@@ -44,40 +44,42 @@ function clearText(field)
     	<div id="column_w600">
         	
             <div class="header_02">High Dynamic Range</div>
-            <p class="em_text">HDR (High Dynamic Range)，即高动态范围图像，目的是使得一幅图像具有宽广的动态范围，在保持图像暗部区域细节的同时其亮的区域不会过曝。</p>
+            <p class="em_text">HDR (High Dynamic Range)，即高动态范围，目的是使得一幅图像具有宽广的动态范围，更好地重现真实场景。</p>
 			
 			<div class="header_05">简介</div>
-			<p>人类的眼睛能够看到很宽广的动态范围，这意味着即使在夜里人也能同时看清明亮的灯光和灰暗的路面，但是，成像设备的动态范围很小。</p>
-			<p>如下图所示，拍摄三幅不同曝光的图像，低曝光的图像保留了亮部的细节，但是会导致图像亮度过低，暗部细节丢失。高曝光的图像亮的区域过曝，但是很好地展现了图像暗部的细节。将这三幅图像结合起来，就可以得到一张暗部和亮部都有细节的图像。</p>
+			<p>现实世界的动态范围非常的宽广，往往是高光照区域和低光照区域同时存在，比如晚上明亮的灯光和黑暗的角落。人眼能在一定范围内能同时看清场景暗部和亮部的细节，很好地还原真实场景，这个从最亮到最暗的范围就是人眼的感光宽容度。但当车灯直射眼睛时，人眼就看不清路面，因此人眼的宽容度远小于现实世界的动态范围。
+			</p>
+			<p>由于硬件的限制，光感成像设备(CCD/CMOS)的感光宽容度又要远远小于人眼的宽容度。当拍摄图像时，虽然人眼能够适应场景的宽动态范围，但相机只能捕获其中一小部分的动态范围。要想用相机将场景完整地记录下来，方法之一是用不同的曝光度拍摄多张同一场景的照片，最后对多张图像进行合成。如下图所示，底部的三张图像分别是三种不同曝光下拍摄的，左一能够保留亮部区域（天空）的细节，左三能够再现暗部区域（木材）的纹理，最后三张图像合成一张HDR图像。</p>
 			<div id="content_image_wrapper">
 				<a href="images/hdr/hdr_samp.jpg"><img src="images/hdr/hdr_samp.jpg" height="531" width="600" alt="hdr" /></a>
 			</div>
 			<br />
 			
-            <p>目前已有的HDR技术中，绝大部分HDR是一种拍照后期的图像处理算法。基于硬件的HDR比较少见，<a href="http://www.oppo.com/index.php?q=mobile/product/newtpl&name=find5&tpl=index">OPPO Find5</a>号称是全球首款硬件支持HDR摄录的手机。正因为HDR只是一种图像处理算法，因此算法的效果决定了最终的成像效果。</p>
+            <p>目前已有的HDR技术中，基于硬件的HDR比较少见，<a href="http://www.oppo.com/index.php?q=mobile/product/newtpl&name=find5&tpl=index">OPPO Find5</a>号称是全球首款硬件支持HDR摄录的手机。绝大部分HDR技术依靠拍摄后期的图像处理，因此，有很多摄影家利用HDR进行创作，拍出了惊艳的<a href="http://www.justphotographer.com/10-damn-awesome-hdr-photographs-high-dynamic-range/">作品</a>：</p>
+			
+			<div id="content_image_wrapper">
+				<a href="images/hdr/hdr1.jpg"><img src="images/hdr/hdr1s.jpg" height="400" width="600" alt="hdr" /></a>
+			</div>
+			<br />
+			<div id="content_image_wrapper">	
+				<a href="images/hdr/hdr2.jpg"><img src="images/hdr/hdr2s.jpg" height="400" width="600" alt="hdr" /></a>
+			</div>
+			<br />
             
 			<div class="margin_bottom_20"></div>
 			<div class="header_05">算法介绍</div>
-			
-            <div class="margin_bottom_20"></div>
-            
-            <ul class="content_list_01">
-                <li>Integer tempor, libero quis laoreet dapibus, quam mauris hendrerit  urna, vel feugiat dolor lectus non velit. Fusce at nisl libero, ac  fringilla risus.</li>
-                <li>Proin non velit nec enim volutpat euismod. Phasellus lorem velit, porttitor non iaculis in, euismod a metus. Nullam orci odio, dignissim a egestas ac, sollicitudin in quam.</li>
-            </ul>
-            
-            <div class="margin_bottom_20"></div>           
-            
-            <div class="content_section_01">
-            	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam a justo dolor. Duis in tincidunt lorem. Nunc et tellus nisi. Nulla non velit lectus. Morbi luctus ullamcorper felis, non gravida neque congue sit amet. Nam nec mi metus, ac elementum velit. Etiam vel arcu velit, eget consequat risus. 
-            </div>
+			<p>以CCD为例，CCD表面排列着许多能够感应光线的电容，当光线照射在电容上时，电容积累会一定的电荷，而电荷的数量则正比于该处的入射光强。当曝光时间过长，会导致该电容的电荷量超过其容量，不能正确地表示该点在</p>
+			<p>以数码相机为例，光从摄像机的镜头进入开始到最终成像，会经过一系列复杂的转变。在这一个过程中，包括了通过光圈、快门，CCD的光电转换，模数转换，量化以及Gamma变换等操作，最终变成人眼所看的数字图像在屏幕上现实出来。在这一过程中，既有线性变换（光电转换），也有非线性变换（Gamma变换），很多过程会引入噪声。</p>
+			<p>1997年，伯克利的Paul Devevec和Jitendra Malik教授发表在SIGGRAPH上的一篇文章奠定了HDR技术的基础。</p>
 			
 			<div class="margin_bottom_20"></div>
 			<div class="header_05">相关代码</div>
             
 			
 			<div class="margin_bottom_20"></div>     
-
+			<div class="header_05">参考文献</div>
+			<p>[1] Debevec and Malik, <a href="http://www.pauldebevec.com/Research/HDR/">Recovering High Dynamic Range Radiance Maps from Photographs.</a> In SIGGRAPH 97.</p>
+			
 			
 			<div class="cleaner"></div>
         </div>

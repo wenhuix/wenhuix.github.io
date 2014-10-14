@@ -7,7 +7,7 @@ body {
 	padding: 0;
 	height: 100%;
 	line-height: 1.5em;
-	font-family: Georgia, "Times New Roman", Times, serif;
+	font-family: Arial, Georgia, "Times New Roman", Times, serif;
 	font-size: 14px; /*字体大小*/
 	color: #666;
 	background: #ffffff;
@@ -335,6 +335,17 @@ img {
 	margin: 0px;
 	padding: 0 0 10px 10px;
 	
+}
+
+.content_list_02 {
+	margin: 0px;
+	padding: 0 0 10px 10px;
+}
+
+.content_list_02 li{
+	margin: 0 0 0 10px;
+	padding: 0px;
+	list-style: none;
 }
 
 .content_section_01 {

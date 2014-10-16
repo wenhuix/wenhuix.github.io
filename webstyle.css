@@ -13,7 +13,7 @@ body {
 	background: #ffffff;
 }
 
-a:visited {color: #FF0000; text-decoration: none;}
+a:visited {color: #CC6688; text-decoration: none;}
 a:link	  {color: #0000FF; text-decoration: none; font-weight: normal;} 
 a:active, a:hover {text-decoration: underline;}
 
@@ -93,7 +93,8 @@ img {
 
 .header_04 {
 	clear: both;
-	font-size: 12px;
+	padding: 5px 0 5px 2em;
+	font-size: 14px;
 	font-weight: bold;
 	color: #000000;
 }

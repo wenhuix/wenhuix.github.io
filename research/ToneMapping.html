@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Tone Mapping</title>
-<meta name="keywords" content="向文辉个人网站，向文辉，图像处理，模式识别" />
-<meta name="description" content="向文辉的个人主网站，包括个人研究，博客等文章" />
+<meta name="keywords" content="Tone Mapping，色调映射，HDR" />
+<meta name="description" content="Tone Mapping算法总结" />
 <link href="../webstyle.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" href="../highlight/styles/default.css">
 <script src="../highlight/highlight.pack.js"></script>
@@ -46,6 +46,7 @@ function clearText(field)
 				
 				<div class="header_02">Tone Mapping</div>
 				<p class="em_text">Tone Mapping，也就是色调映射，将HDR图像的高动态范围映射到指定的范围内，方便在普通显示器上展示和用人眼查看。</p>
+				<div class="margin_bottom_10"></div> 
 				<div class="header_05">简介</div>
 				
 				
@@ -64,16 +65,30 @@ function clearText(field)
 					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam a justo dolor. Duis in tincidunt lorem. Nunc et tellus nisi. Nulla non velit lectus. Morbi luctus ullamcorper felis, non gravida neque congue sit amet. Nam nec mi metus, ac elementum velit. Etiam vel arcu velit, eget consequat risus. 
 				</div>
 				
-				<div class="margin_bottom_10"></div>  
+				<div class="margin_bottom_20"></div>  
 				<div class="header_05">相关代码</div>
+				<p class="em_text">1、 "pfstmo" tone mapping library，该库是ToneMapping算法的C++实现，可贵的是提供了源代码：<a href="http://pfstools.sourceforge.net/pfstmo.html">http://pfstools.sourceforge.net/pfstmo.html</a>，目前最新的版本是1.9，主要实现的算法列表如下所示：</p>
+				<ul class="content_list_01">
+					<li><a href="http://resources.mpi-inf.mpg.de/tmo/logmap/">Adaptive logarithmic tone mapping operator</a>, based on Drago, F., Myszkowski, K., Annen, T., Chiba, N. (2003). Adaptive Logarithmic Mapping For Displaying High Contrast Scenes. Computer Graphics Forum, 22(3), 419–426. </li>
+					<li><a href="http://people.csail.mit.edu/fredo/PUBLI/Siggraph2002/">Fast bilateral filtering tone mapping operator</a>, based on Durand, F., and Dorsey, J. (2002). Fast bilateral filtering for the display of high-dynamic-range images. ACM Transactions on Graphics, 21(3), 257–266. </li>
+					<li><a href="http://www.cs.huji.ac.il/~danix/hdr/">Gradient domain tone mapping operator, based on Fattal</a>, R., Lischinski, D., & Werman, M. (2002). Gradient domain high dynamic range compression. ACM Transactions on Graphics, 21(3), 249.</li>
+					<li><a href="http://people.mpi-inf.mpg.de/~mantiuk/contrast_domain/">Contrast domain tone mapping operator</a>, based on Mantiuk, R., Myszkowski, K., & Seidel, H. (2006). A perceptual framework for contrast processing of high dynamic range images. ACM Transactions on Applied Perception (TAP), 3(3), 286–308.</li>
+					<li><a href="http://resources.mpi-inf.mpg.de/hdr/datmo/">Display adaptive tone mapping</a>, based on Mantiuk, R., Daly, S., & Kerofsky, L. (2008). Display adaptive tone mapping. ACM Transactions on Graphics (Proc. of SIGGRAPH), 27(3), 68. 
+					<li>Time-dependent visual adaptation tone mapping operator, based on Pattanaik, S. N., Tumblin, J., Yee, H., & Greenberg, D. P. (2000). Time-dependent visual adaptation for fast realistic image display. ACM Transactions on Graphics, 47–54.</li>
+					<li><a href="http://www.cs.utah.edu/~reinhard/cdrom/">Photographic tone mapping operator</a>, based on Reinhard, E., Stark, M., Shirley, P., & Ferwerda, J. (2002). Photographic tone reproduction for digital images. ACM Transactions on Graphics.</li>
+					<li><a href="http://www.cs.utah.edu/~reinhard/cdrom/">Photoreceptor tone mapping operator</a>, based on Reinhard, E., & Devlin, K. (2005). Dynamic range reduction inspired by photoreceptor physiology. IEEE Transactions on Visualization and Computer Graphics, 11(1), 13–24.</li>
+				</UL>
 				
+				<p class="em_text">2、Debevec HDR和Rachard Tonemapping(2002,2005)的 Matlab 实现，代码通俗易懂，值得推荐：<a href="http://cybertron.cg.tu-berlin.de/eitz/hdr/">http://cybertron.cg.tu-berlin.de/eitz/hdr/</a>，备份的代码下载点<a href="code/Debevec_Rachard_matlab_code.zip">这里</a>。</p>
 				
-				<div class="margin_bottom_10"></div>  
+				<div class="margin_bottom_20"></div>  
 				<div class="header_05">参考文献</div>
+				<p>[1] Yuanzhen Li, Lavanya Sharan, and Edward H. Adelson. 2005. <a href="http://www.mit.edu/~yzli/hdr_companding.htm">Compressing and companding high dynamic range images with subband architectures</a>. ACM Trans. Graph. 24, 3</p>
+				<p></p>
+				
 				
 				<div class="margin_bottom_20"></div>   
 
-			
 				<div class="cleaner"></div>
 
 			</div>

@@ -2,9 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>TODO</title>
-<meta name="keywords" content="Beerbottle 个人网站，图像处理，模式识别" />
-<meta name="description" content="Beerbottle的个人主网站，包括个人研究，博客等文章" />
+<title>Image Filter</title>
+<meta name="keywords" content="Filter，滤波器，图像滤波，去噪" />
+<meta name="description" content="数字图像去噪，数字图像滤波" />
 <link href="../webstyle.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" href="../highlight/styles/default.css">
 <script src="../highlight/highlight.pack.js"></script>
@@ -44,13 +44,23 @@ function clearText(field)
 		
 			<div id="column_w600">
 				
-				<div class="header_02">大标题</div>
+				<div class="header_02">数字图像滤波算法</div>
 				
 				<p class="em_text">简介</p>
 				
 				<div class="header_05">一级标题</div>
+				<div class="header_04">1、双边滤波器 (Bilateral Filter)</div>	
+				<p>双边滤波器是由Tomas提出来的</p>
 				
-				<p>内容</p>
+				<div class="header_04">2、非局部均值滤波器 (Non-Local Means Filter)</div>	
+				<p></p>
+				
+				<div class="header_04">3、引导滤波器 Guide Filter</div>
+				<p></p>
+				
+				<div class="header_04">4、局部拉普拉斯滤波器 Local Laplacian Filter</div>
+				<p></p>
+				<p>Paris等在2011年提出了基于局部的拉普拉斯滤波器，。。。，由于要对高斯金字塔上的每一点都要进行处理，速度非常慢。因此，在此基础上，这几个人对原有的算法进行改进，用更为严谨的数学表达式对滤波器进行了描述，与双边滤波器联系到一起。。。。。极大地提高了算法的效率，作者给出的结果是速度最少提高20倍，这也使得该算法的实时运算成为可能。结果也同样发表在ACM的Graph期刊上。</p>
 				
 				<div class="margin_bottom_10"></div>
 				<div class="header_05">一级标题</div>
@@ -70,27 +80,14 @@ function clearText(field)
 				
 				<div class="margin_bottom_20"></div>     
 				<div class="cleaner"></div>
-				<pre><code>
-		#include &lt;iostream&gt;
-		#define IABS(x) ((x) &lt; 0 ? -(x) : (x))
 
-		int main(int argc, char *argv[]) {
-
-		  /* An annoying "Hello World" example */
-		  for (auto i = 0; i < 0xFFFF; i++)
-			cout << "Hello, World!" << endl;
-
-		  char c = '\n';
-		  unordered_map &lt;string, vector&lt;string&gt; &gt; m;
-		  m["key"] = "\\\\"; // this is an error
-
-		  return -2e3 + 12l;
-		}
-				</code></pre>  
+				<div class="header_05">参考文献</div>
+				
+				<p>[1] Sylvain Paris, Samuel W. Hasinoff, and Jan Kautz. 2011. <a href="http://people.csail.mit.edu/sparis/publi/2011/siggraph/">Local Laplacian filters: edge-aware image processing with a Laplacian pyramid</a>. ACM Trans. Graph. 30, 4, Article 68. <a href="code/2011_local_Laplacian_filters_matlab_code.zip">Code</a>.</p>
+				<p>[2] Mathieu Aubry, Sylvain Paris, Samuel W. Hasinoff, Jan Kautz, and Frédo Durand. 2014. <a href="http://www.di.ens.fr/~aubry/llf.html">Fast Local Laplacian Filters: Theory and Applications</a>. ACM Trans. Graph. 33, 5. <a href="code/2014_fast_llf_and_style_transfer_matlab.zip">Code</a>.</p>
 				
 				<div class="cleaner"></div>
 			</div>
-			
 			
 		
 			<div class="cleaner"></div>

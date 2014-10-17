@@ -304,6 +304,14 @@ img {
 	border: 1px solid #e5e5e5;
 }
 
+#column_w260{
+	text-indent:0px;
+	float: right;
+	width: 258px;
+	background: #efefef;
+	border: 1px solid #e5e5e5;
+}
+
 #column_w600 .em_text {
 	color: #000;
 }
@@ -355,6 +363,7 @@ img {
 }
 
 .column_w300_section_01 {
+	text-indent:0em;
 	clear: both;
 	padding: 20px 19px;
 	background: url(images/side_column_divider.jpg) bottom repeat-x;

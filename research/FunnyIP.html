@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>好玩的图像处理算法</title>
+<meta name="keywords" content="图像处理，图像镶嵌，图像拼接，着色" />
+<meta name="description" content="有意思的图像处理算法" />
+<link href="../webstyle.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="../highlight/styles/default.css">
+<script src="../highlight/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script language="javascript" type="text/javascript">
+function clearText(field)
+{
+    if (field.defaultValue == field.value) field.value = '';
+    else if (field.value == '') field.value = field.defaultValue;
+}
+</script>
+</head>
+<body>
+<div id="container">
+	<div id="header_wrapper">
+	<!--  Free Web Templates by TemplateMo.com  -->
+	  <div id="header">
+		
+		<div id="site_logo"></div>
+			
+			<div id="menu">
+				<div id="menu_left"></div>
+				<ul>
+					  <li><a href="../index.html">首页</a></li>
+					  <li><a href="../projects.html">工程</a></li>
+					  <li><a href="../research.html" class="current">研究</a></li>
+					  <li><a href="../blog.html">博客</a></li>
+					  <li><a href="../about.html" class="last">关于我</a></li>
+				</ul>    	
+			</div> <!-- end of menu -->
+		
+		</div>  <!-- end of header -->
+	</div> <!-- end of header wrapper -->
+
+	<div id="content_wrapper">
+		<div id="content">
+		
+			<div id="column_w600">
+				
+				<div class="header_02">好玩的图像处理算法</div>
+				
+				<p class="em_text">在研究的过程中，有时候会碰到很多有意思的图像处理算法，算法极具新意，并且能够产生非常有意思的结果。</p>
+				
+				<div class="header_05">算法简介</div>
+				<div class="header_04">1、图像镶嵌</div>
+				
+				<p>图像镶嵌也叫图像混合（Image Blending）、图像剪接（Image Editing），是通过特定的图像处理方法将本来毫无关系的两幅图无缝剪辑到一起，并能够很好地融合两者之间的剪接处，产生以假乱真的效果，不信我们就来看看。</p>
+				<div id="content_image_wrapper">
+					<img src="images/fun/imblind1.jpg" height="140" width="195" alt="hdr" />
+					<img src="images/fun/imblind3.jpg" height="140" width="200" alt="hdr" />
+					<img src="images/fun/imblind2.jpg" height="140" width="195" alt="hdr" />
+				</div>
+				<div id="content_image_wrapper">
+					<a href="images/fun/imblindres.jpg"><img src="images/fun/imblindres.jpg" height="440" width="595" alt="hdr" /></a>
+				</div>
+				<p>手和嘴巴在两幅不同的图中，只要给定一个模板，就可以把模板指定的部分无缝拼接到另外一幅图中去，是不是看上去毫无违和感，比某些人的PS技术强多了。</p>
+				<p>同样的还有下面这种技术，这个算法同样也是划定一个区域，就能够将两幅图中的物体都拿出来，拼接到第三幅图上去，简直天衣无缝。这两个算法的技术细节可看参考文献[1][2]。</p>
+				<div id="content_image_wrapper">
+					<a href="images/fun/imEditing.jpg"><img src="images/fun/imEditing.jpg" height="310" width="600" alt="hdr" /></a>
+				</div>
+				
+				<div class="margin_bottom_10"></div>
+				<div class="header_04">2、黑白图像着色</div>
+				
+				<p>家里有黑白的老照片，想把它变成彩色照片，看看老一辈人真实的模样，那你可以试试下面这个图像着色（Colorization）算法。你只要拿彩笔在图像上画几笔，剩下的事情就交给算法啦。这个算法除了给黑白图片着色，还能够给视频着色呢！不信就去文献[3]看看。</p>
+				<div id="content_image_wrapper">
+					<a href="images/fun/Colorization.jpg"><img src="images/fun/Colorization.jpg" height="486" width="600" alt="hdr" /></a>
+				</div>
+
+				<div class="header_05">参考文献</div>
+				<p>[1] Peter J. Burt and Edward H. Adelson. 1983. A multiresolution spline with application to image mosaics. ACM Trans. Graph. 2, 4 (October 1983)</p>
+				<p>[2] Patrick Pérez, Michel Gangnet, and Andrew Blake. 2003. Poisson image editing. ACM Trans. Graph. 22, 3 (July 2003)</p>
+				<p>[3] Anat Levin, Dani Lischinski, and Yair Weiss. 2004. <a href="http://www.cs.huji.ac.il/~yweiss/Colorization/">Colorization using optimization</a>. ACM Trans. Graph. 23, 3 (August 2004) </p>
+				<div class="cleaner"></div>
+			</div>
+			
+			
+		
+			<div class="cleaner"></div>
+		</div> <!-- end of content wrapper -->
+	</div> <!-- end of content wrapper -->
+</div> <!-- end of container -->
+
+<div id="footer_wrapper">
+
+	<div id="footer">
+    	<script src="../js/footer.js"></script>
+        <div class="cleaner"></div>
+    </div> <!-- end of footer -->
+    <!--  Free CSS Templates by TemplateMo.com  -->
+</div> <!-- end of footer -->
+        
+    </body>
+</html>

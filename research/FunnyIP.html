@@ -56,7 +56,7 @@ function clearText(field)
 					<a href="images/fun/imblind.jpg"><img src="images/fun/imblind.jpg" height="345" width="600"/></a>
 				</div>
 				<p>上图左边的手和嘴巴在两幅不同的图中，只要给定一个模板，就可以把一幅图中模板指定的部分无缝拼接到另外一幅图中去，从右边的结果来看是不是看上去毫无违和感？比某些人的PS技术强多了。</p>
-				<p>类似剪接效果的还有下面这种技术，该算法同样也是划定一个区域，能够将两幅图中的指定区域图像都拿出来，拼接到第三幅图上去，结果简直天衣无缝。这两个算法的技术细节可看参考文献[1][2]。</p>
+				<p>类似剪接效果的还有下面这种技术，该算法同样也是划定一个区域，能够将两幅图中的指定区域图像都拿出来，拼接到第三幅图上去，结果简直天衣无缝。这两个算法的技术细节可看参考文献[1][2]。同样也可以参考这位小哥的<a href="http://www.howardzzh.com/research/poissonImageEditing/">代码</a>。</p>
 				<div id="content_image_wrapper">
 					<a href="images/fun/imEditing.jpg"><img src="images/fun/imEditing.jpg" height="310" width="600"/></a>
 				</div>
@@ -69,11 +69,19 @@ function clearText(field)
 					<a href="images/fun/Colorization.jpg"><img src="images/fun/Colorization.jpg" height="486" width="600"/></a>
 				</div>
 
+				<div class="margin_bottom_10"></div>
+				<div class="header_04">3、图像超分辨</div>
+				<p>还记得小时候的红白机画面么，分辨率很低，如果放大的话，渣渣的马赛克就来了，想不起来了？想想《愤怒的小鸟》那个游戏里面马赛克小鸟，实在让人心塞，如果用了这个算法效果绝对就不一样了。该超分辨算法能够将分辨率非常低的图像提取与分辨率无关的向量，最后的高分辨率图像真是碉堡了，完虐普通的最近邻插值法放大的图像。还有人提供了<a href="https://github.com/jerith/depixel">Python源代码</a>呢。</p>
+				<div id="content_image_wrapper">
+					<a href="images/fun/pixel.jpg"><img src="images/fun/pixel.jpg" height="147" width="600"/></a>
+				</div>
+				
 				<div class="margin_bottom_20"></div>
 				<div class="header_05">参考文献</div>
 				<p>[1] Peter J. Burt and Edward H. Adelson. 1983. A multiresolution spline with application to image mosaics. ACM Trans. Graph. 2, 4 (October 1983)</p>
 				<p>[2] Patrick Pérez, Michel Gangnet, and Andrew Blake. 2003. Poisson image editing. ACM Trans. Graph. 22, 3 (July 2003)</p>
 				<p>[3] Anat Levin, Dani Lischinski, and Yair Weiss. 2004. <a href="http://www.cs.huji.ac.il/~yweiss/Colorization/">Colorization using optimization</a>. ACM Trans. Graph. 23, 3 (August 2004) </p>
+				<p>[4] Johannes Kopf and Dani Lischinski. 2011. <a href="http://research.microsoft.com/en-us/um/people/kopf/pixelart/">Depixelizing Pixel Art</a>ACM Transactions on Graphics (Proceedings of SIGGRAPH 2011).</p>
 				<div class="cleaner"></div>
 			</div>
 			

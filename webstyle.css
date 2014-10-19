@@ -273,7 +273,7 @@ img {
 	clear: both;
 	width: 980px;
 	margin: 0 auto;
-	padding-bottom: 50px;/*高度等于footer*/
+	padding-bottom: 55px;/*高度等于footer*/
 	background: #ffffff;
 }
 
@@ -409,8 +409,8 @@ img {
 #footer_wrapper {
 	width: 100%;
 	position: relative;
-	margin-top: -50px;/*等于footer的高度*/
-	height: 50px;
+	margin-top: -55px;/*等于footer的高度*/
+	height: 55px;
 	clear: both;
 
 	background: url(images/footer_bg.jpg) repeat-x;

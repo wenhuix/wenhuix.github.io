@@ -60,10 +60,10 @@ function clearText(field)
 				<div class="margin_bottom_10"></div> 
 				<p>其中有些问题已经严重影响到使用体验，像不支持COM4以上的串口导致根本不能工作。数据发送过程不透明，不知道具体发送的数据是什么。为了不再忍受各种老掉牙的软件，自己随手写一个简单的串口调试助手，主要实现以下功能：</p>
 				<ul class="content_list_01">
-					<li>自动识别已有的串口。</li>
+					<li>自动查找并列出已有的串口。</li>
 					<li>界面清爽。</li>
-					<li>能发送String类型和Hex类型，并能够在两者之间相互转换。</li>
-					<li>代码开源，所有发送过程对用户透明。</li>
+					<li>能发送String类型和Hex类型，能够在两者之间相互转换。</li>
+					<li>代码开源，所有发送过程对用户透明，方便调试。</li>
 					<li>基于Windows，无附加依赖库。</li>
 				</ul>
 				
@@ -76,7 +76,12 @@ function clearText(field)
 					</a>
 					</div>
 				</div>
-								
+				<div class="margin_bottom_20"></div>
+				
+				<p class="em_text">使用说明：</p>
+				<p>1、在Windows系统中，回车键是以"\r\n"表示，如果在发送文本框中输入了回车键，在String模式下发送的数据将包括 0x0D 0x0A 两个字节。在Hex模式下，将无法输入回车键，如果需要回车，用0x0D 0x0A代替。</p>
+				<p>2、Hex模式下，直接输入16进制数，输入的格式为： FF-34-56-90</p>
+				
 				<div class="margin_bottom_10"></div>  
 				<div class="header_05">代码</div>
 				<p class="em_text"><a href="https://github.com/wenhuix/COMDBG">https://github.com/wenhuix/COMDBG</a></p>

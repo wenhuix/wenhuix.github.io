@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>智能交通</title>
+<meta name="keywords" content="智能交通，汽车跟踪，三维建模" />
+<meta name="description" content="对马路上的汽车进行三维建模，利用该模型对汽车进行跟踪。" />
+<link href="../webstyle.css" rel="stylesheet" type="text/css" />
+<script language="javascript" type="text/javascript">
+function clearText(field)
+{
+    if (field.defaultValue == field.value) field.value = '';
+    else if (field.value == '') field.value = field.defaultValue;
+}
+</script>
+</head>
+<body>
+<div id="container">
+	<div id="header_wrapper">
+	<!--  Free Web Templates by TemplateMo.com  -->
+	  <div id="header">
+		
+		<div id="site_logo"></div>
+			
+			<div id="menu">
+				<div id="menu_left"></div>
+				<ul>
+					  <li><a href="../index.html">首页</a></li>
+					  <li><a href="../projects.html" class="current">工程</a></li>
+					  <li><a href="../research.html">研究</a></li>
+					  <li><a href="../blog.html">博客</a></li>
+					  <li><a href="../about.html" class="last">关于我</a></li>
+				</ul>    	
+			</div> <!-- end of menu -->
+		</div>  <!-- end of header -->
+	</div> <!-- end of header wrapper -->
+
+
+	<div id="content_wrapper">
+		<div id="content">
+		
+			<div id="column_w600">
+				
+				<div class="header_02">智能交通中的车辆跟踪 2012-09-10</div>	
+				<p class="em_text">车辆识别及跟踪是实现智能交通的关键，对车辆行为的分析都是建立在能正常识别和跟踪车辆的基础上的。本工程能够对交通视频中的多个车辆进行稳定和准确的跟踪。鲁棒性高，具有实用价值。</p>
+				<div class="header_05">简介</div>
+				
+				<p>本工程由C++语言在Windows下实现，算法参考了德国的一个研究团队自1990年以来的成果。这个团队在智能交通这一方面有非常深厚的积累，二十多年里他们的研究全部围绕只能交通这一目标展开，构建了一个完整的算法框架。研究成果发表论文无数，其中包括多篇IJCV这种顶级期刊。</p>
+				<p>本工程算法的简略步骤：</p>
+				<p>(1) 首先对常见的车辆建立一个线框模型，该模型主要是点和线组成，主要表示的是车辆的边缘及轮廓，虽然简陋，但是能够表示车辆的主要特征。</p>
+				<div id="content_image_wrapper">
+					<div style="text-align:center">
+						<img src="images/motris/model.jpg" align="center"/>
+					</div>
+				</div>
+				</br>
+				<p>(2) 计算图像的主要边缘，通过光流计算出场景中运动的区域。当然，边缘中属于车辆只是很小的一部分，并且通过光流求出来的这些区域有可能是车辆，也有可能是其他干扰的运动物体，也有可能是误检测。</p>
+				<div id="content_image_wrapper">
+					<div style="text-align:center">
+						<img src="images/motris/edge.jpg" align="center" />
+					</div>
+				</div>
+				<div id="content_image_wrapper">
+					<div style="text-align:center">
+						<img src="images/motris/flow.jpg" align="center" />
+					</div>
+				</div>
+				</br>
+				<p>(3) 在现实世界中建立坐标系，建立路面物体到成像平面的映射关系，将处于路面上的线框模型投影到图像平面上。</p>
+				<div id="content_image_wrapper">
+					<div style="text-align:center">
+						<img src="images/motris/project.jpg" align="center"/>
+					</div>
+				</div>
+				</br>
+				<p>(4) 利用光流和边缘，将线框模型在图像上的成像与图像中的车辆轮廓进行匹配，寻找两者的最佳匹配位置，匹配的过程中，还考虑了有阳光时，车辆投影对车辆轮廓所来带的干扰，对阴影也进行了建模。</p>
+				<div id="content_image_wrapper">
+					<div style="text-align:center">
+						<img src="images/motris/edgematch.jpg" align="center"/>
+					</div>
+				</div>
+				</br>
+				<p>(5) 利用光流求出来的运动方向、大小和卡尔曼滤波器对车辆的前进方向进行预测和跟踪。</p>
+				<p>(6) 步骤2到步骤5不断地迭代。</p>
+				
+				<div class="header_05">算法效果：</div>
+				<p>跟踪的效果如下图所示：</p>
+				<div id="content_image_wrapper">
+					<div style="text-align:center">
+					<img src="images/motris/motris.gif"/>
+					</div>
+				</div>
+				
+				<br />
+				<div class="header_05">参考文献：</div>
+				<p>[1] Roller D, Daniilidis K, Nagel H H. Model-based object tracking in monocular image sequences of road traffic scenes[J]. International Journal of Computer Vision, 1993, 10(3): 257-281.</p>
+				<p>[2] Haag M, Nagel H H. Combination of edge element and optical flow estimates for 3D-model-based vehicle tracking in traffic image sequences[J]. International Journal of Computer Vision, 1999, 35(3): 295-319.</p>
+				<p>[3] Ottlik A, Nagel H H. Initialization of model-based vehicle tracking in video sequences of inner-city intersections[J]. International Journal of Computer Vision, 2008, 80(2): 211-225.</p>
+				<p>[4] Pece A E C, Worrall A D. Tracking with the EM contour algorithm[M]//Computer Vision—ECCV 2002. Springer Berlin Heidelberg, 2002: 3-17.</p>
+				<p>[5] Kollnig H, Nagel H H. Matching object models to segments from an optical flow field[M]//Computer Vision—ECCV'96. Springer Berlin Heidelberg, 1996: 388-399.</p>
+				<p>[6] <a href="http://i21www.ira.uka.de/">http://i21www.ira.uka.de/</a></p>
+
+				<p>（完）</p>
+			</div>
+			
+			<!--文章列表-->
+			<script src="../js/projectlist.js"></script>
+			
+			<div class="cleaner"></div>
+		</div> <!-- end of content wrapper -->
+	</div> <!-- end of content wrapper -->
+</div> <!-- end of container -->
+
+<div id="footer_wrapper">
+
+	<div id="footer">
+    	<script src="../js/footer.js"></script>
+        <div class="cleaner"></div>
+    </div> <!-- end of footer -->
+    <!--  Free CSS Templates by TemplateMo.com  -->
+</div> <!-- end of footer -->
+        
+</body>
+</html>

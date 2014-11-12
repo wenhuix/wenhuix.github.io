@@ -159,17 +159,14 @@ public class ComModel
 	public bool Send(Byte[] bytes)
 	{
 		...
-		lock (thisLock)
+		try
 		{
-			try
-			{
-				sp.Write(bytes, 0, bytes.Length);
-				
-			}
-			catch (System.Exception)
-			{
-				return false;   //write failed
-			}
+			sp.Write(bytes, 0, bytes.Length);
+			
+		}
+		catch (System.Exception)
+		{
+			return false;   //write failed
 		}
 		return true;        //write successfully
 	}

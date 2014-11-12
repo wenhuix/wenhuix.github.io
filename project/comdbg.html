@@ -102,7 +102,8 @@ function clearText(field)
 				
 				<p>Model类主要是跟串口相关的一些操作，包括打开、关闭串口，接收和发送串口数据。在该类中，定义了事件，当接收到串口的数据时，如果有函数注册到了该事件上，则该函数就会被调用，并通过预先定义的参数类，将接收到的数据传递过去。该类需要注意以下几点：</p>
 				<p>(1) 打开串口时，当Handshake设置为None时，需要设置串口的 RtsEnable = true 和 DtrEnable = true。</p>
-				<p>(2) 关闭串口时，要在非当前线程下进行，要防止死锁事件的发生。</p>
+				<p>(2) 根据MSDN的表述，只有SerailPort的公共静态类型的成员是线程安全的，而 SerialPort.Read() 和 SerialPort.Write() 并不是静态方法，因此，需要加入同步锁，以防止在读/写串口的过程中被其他线程中断出现读写错误。</p>
+				<p>(3) 关闭串口时，要在非当前线程下进行，要防止死锁事件的发生。</p>
 				<pre><code>
 //申明委托函数和传递参数的类
 public delegate void SerialPortEventHandler(Object sender, SerialPortEventArgs e);
@@ -110,13 +111,13 @@ public delegate void SerialPortEventHandler(Object sender, SerialPortEventArgs e
 public class SerialPortEventArgs : EventArgs
 {
 	public bool isOpend = false;
-	public String receivedString = "";
+	public Byte[] receivedBytes = null;
 }
 
 public class ComModel
 {
 	private SerialPort sp = new SerialPort();
-
+	private Object thisLock = new Object();
 	//申明事件
 	public event SerialPortEventHandler comReceiveDataEvent = null;
 					
@@ -126,11 +127,25 @@ public class ComModel
 	//当串口收到数据时，会自动调用该函数：
 	private void DataReceived(object sender, SerialDataReceivedEventArgs e)
 	{
-		while (sp.IsOpen && sp.BytesToRead > 0)
+		if (sp.BytesToRead <= 0)
 		{
-			string str = sp.ReadExisting();
+			return;
+		}
+		//加锁，保证线程安全
+		lock (thisLock)
+		{
+			int len = sp.BytesToRead;
+			Byte[] data = new Byte[len];
+			try
+			{
+				sp.Read(data, 0, len);
+			}
+			catch (System.Exception)
+			{
+				//catch read exception
+			}
 			SerialPortEventArgs args = new SerialPortEventArgs();
-			args.receivedString = str;
+			args.receivedBytes = data;
 			//用事件通知界面
 			if (comReceiveDataEvent != null)
 			{
@@ -222,7 +237,7 @@ public partial class MainForm : Form, IView
 				sender, e);
 			return;
 		}
-		receivetbx.AppendText(e.receivedString);
+		receivetbx.AppendText(Encoding.Default.GetString(e.receivedBytes));
 	}
 	
 	//点击发送按钮时，调用Controller发送数据
@@ -237,7 +252,7 @@ public partial class MainForm : Form, IView
 }	
 				</code></pre>
 				
-				<p>Controller类是Form类和Model类的桥梁，在该Controller中，将界面上的更新函数注册到Model中。一般来说Controller比较复杂，但在这里比较简单。没有数据库相关的操作。</p>
+				<p>Controller类是Form类和Model类的桥梁，在该Controller中，将界面上的更新函数注册到Model中。一般来说Controller比较复杂的一部分，但在这个程序中比较简单，没有数据库相关的操作。</p>
 				<pre><code>
 public class IController
 {
@@ -269,7 +284,7 @@ public class IController
 				<p><a href=""></a></p>
 				<p>[1] <a href="http://www.codeproject.com/Articles/678025/Serial-Comms-in-Csharp-for-Beginners">Serial Comms in C# for Beginners.</a> CodeProject 2013.</p>
 				<p>[2] <a href="http://www.codeproject.com/Articles/613682/Your-first-program-using-MVC-pattern-with-Csharp-W">Your first program using MVC pattern with C#/WinForms.</a> CodeProje 2013.</p>
-
+				<p>（完）</p>
 			</div>
 			
 			<!--文章列表-->

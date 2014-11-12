@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>C#串口调试助手</title>
+<title>串口调试助手</title>
 <meta name="keywords" content="串口调试助手，串口调试，C#，.Net" />
 <meta name="description" content="基于.Net技术的串口调试助手，能够发送字符串和16进制数据。" />
 <link href="../webstyle.css" rel="stylesheet" type="text/css" />
@@ -69,32 +69,33 @@ function clearText(field)
 				</ul>
 				
 				<div class="margin_bottom_10"></div> 
-				<p>编程语言使用C#，基于微软.Net技术实现串口通信，软件采用MVC设计模式。以下是软件界面截图：</p>
+				<p>编程语言使用C#，基于微软.Net Framework 4.0 Client Profile。没有使用其他版本进行测试，因此使用其他版本可能导致运行不正确。如果电脑没有安装，可以<a href="http://www.microsoft.com/zh-cn/download/details.aspx?id=24872">点此</a>下载。以下是软件界面截图：</p>
 				<div id="content_image_wrapper">
 					<div style="text-align:center">
-					<a href="images/comdbg.jpg">
-					<img src="images/comdbg.jpg" align="center" height="433" width="466"  />
+					<img src="https://raw.githubusercontent.com/wenhuix/COMDBG/screenshot/Screenshot.jpg" align="center"/>
 					</a>
 					</div>
 				</div>
 				<div class="margin_bottom_20"></div>
 				
-				<p class="em_text">使用说明：</p>
+				<p>使用说明：</p>
 				<p>1、在Windows系统中，回车键是以"\r\n"表示，如果在发送文本框中输入了回车键，在String模式下发送的数据将包括 0x0D 0x0A 两个字节。在Hex模式下，将无法输入回车键，如果需要回车，用0x0D 0x0A代替。</p>
 				<p>2、Hex模式下，直接输入16进制数，输入的格式为： FF-34-56-90</p>
 				
 				<div class="margin_bottom_10"></div>  
-				<div class="header_05">代码</div>
+				<div class="header_05">下载地址</div>
 				<div class="margin_bottom_10"></div> 
-				<p class="em_text"><a href="https://github.com/wenhuix/COMDBG">https://github.com/wenhuix/COMDBG</a></p>
+				<p>在Github上托管地址：<a href="https://github.com/wenhuix/COMDBG">https://github.com/wenhuix/COMDBG</a>，为Visual Studio 2010工程。</p>
 				
-				<p class="em_text">核心代码简介：</p>
+				<div class="margin_bottom_10"></div>  
+				<div class="header_05">代码说明</div>
+				<div class="margin_bottom_10"></div> 
 				
-				<p>MVC架构如下图所示：</p>
+				<p>软件采用MVC设计模式，其架构如下图所示：</p>
 				<div id="content_image_wrapper">
 					<div style="text-align:center">
 					<a href="images/mvc.jpg">
-					<img src="images/mvc.jpg" align="center" height="466" width="573"  />
+					<img src="images/mvc.jpg" align="center"/>
 					</a>
 					</div>
 				</div>
@@ -102,7 +103,7 @@ function clearText(field)
 				
 				<p>Model类主要是跟串口相关的一些操作，包括打开、关闭串口，接收和发送串口数据。在该类中，定义了事件，当接收到串口的数据时，如果有函数注册到了该事件上，则该函数就会被调用，并通过预先定义的参数类，将接收到的数据传递过去。该类需要注意以下几点：</p>
 				<p>(1) 打开串口时，当Handshake设置为None时，需要设置串口的 RtsEnable = true 和 DtrEnable = true。</p>
-				<p>(2) 根据MSDN的表述，只有SerailPort的公共静态类型的成员是线程安全的，而 SerialPort.Read() 和 SerialPort.Write() 并不是静态方法，因此，需要加入同步锁，以防止在读/写串口的过程中被其他线程中断出现读写错误。</p>
+				<p>(2) 根据MSDN上关于SerialPort这个类的<a href="http://msdn.microsoft.com/zh-cn/library/system.io.ports.serialport(v=vs.110).aspx">表述</a>，只有SerailPort的公共静态类型的成员是线程安全的，而 SerialPort.Read() 和 SerialPort.Write() 并不是静态方法，因此，需要加入同步锁，以防止在读/写串口的过程中被其他线程中断出现读写错误。</p>
 				<p>(3) 关闭串口时，要在非当前线程下进行，要防止死锁事件的发生。</p>
 				<pre><code>
 //申明委托函数和传递参数的类
@@ -158,13 +159,17 @@ public class ComModel
 	public bool Send(Byte[] bytes)
 	{
 		...
-		try
+		lock (thisLock)
 		{
-			sp.Write(bytes, 0, bytes.Length);
-		}
-		catch (System.Exception)
-		{
-			return false;   //write failed
+			try
+			{
+				sp.Write(bytes, 0, bytes.Length);
+				
+			}
+			catch (System.Exception)
+			{
+				return false;   //write failed
+			}
 		}
 		return true;        //write successfully
 	}
@@ -206,7 +211,7 @@ public class ComModel
 				</code></pre> 
 				
 				<p>Form类是与界面相关的代码，是Model的观察者，在该类里会实现接口View中更新界面的函数，当该函数注册到Model中并被调用时会更新界面。该类需要注意以下问题：</p>
-				<p>(1) 永远不要在非UI的线程内更新UI部件，这是黄金定律。</p>
+				<p>黄金定律：永远不要在非UI的线程内更新UI部件</p>
 				<pre><code>
 public interface IView
 {
@@ -222,13 +227,13 @@ public partial class MainForm : Form, IView
 	private IController controller;
 	...
 	
-	// 设置控制器
+	//设置控制器
 	public void SetController(IController controller)
 	{
 		this.controller = controller;
 	}
 
-	// 收到串口数据后，更新界面
+	//收到串口数据后，更新界面
 	public void ComReceiveDataEvent(Object sender, SerialPortEventArgs e)
 	{
 		if (this.InvokeRequired)
@@ -264,10 +269,11 @@ public class IController
 		this.view = view;
 		view.SetController(this);
 		//将页面上的更新界面函数注册到Model的事件
-		comModel.comReceiveDataEvent += new SerialPortEventHandler(view.ComReceiveDataEvent);
+		comModel.comReceiveDataEvent 
+			+= new SerialPortEventHandler(view.ComReceiveDataEvent);
 	}		
 
-	// 通过Model发送字符串到串口
+	//通过Model发送字符到串口
 	public bool SendDataToCom(String str)
 	{
 		if (str != null && str != "")

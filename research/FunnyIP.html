@@ -53,12 +53,12 @@ function clearText(field)
 				
 				<p>图像镶嵌也叫图像混合（Image Blending）、图像剪接（Image Editing），是通过特定的图像处理方法将本来毫无关系的两幅图无缝剪辑到一起，并能够很好地融合两者之间的剪接处，产生以假乱真的效果，不信我们就来看看。</p>
 				<div id="content_image_wrapper">
-					<a href="images/fun/imblind.jpg"><img src="images/fun/imblind_s.jpg" height="345" width="600"/></a>
+					<img src="images/fun/imblind_s.jpg"/>
 				</div>
 				<p>上图左边的手和嘴巴在两幅不同的图中，只要给定一个模板，就可以把一幅图中模板指定的部分无缝拼接到另外一幅图中去，从右边的结果来看是不是看上去毫无违和感？比某些人的PS技术强多了。</p>
 				<p>类似剪接效果的还有下面这种技术，该算法同样也是划定一个区域，能够将两幅图中的指定区域图像都拿出来，拼接到第三幅图上去，结果简直天衣无缝。这两个算法的技术细节可看参考文献[1][2]。同样也可以参考这位小哥的<a href="http://www.howardzzh.com/research/poissonImageEditing/">代码</a>。</p>
 				<div id="content_image_wrapper">
-					<a href="images/fun/imEditing.jpg"><img src="images/fun/imEditing.jpg" height="310" width="600"/></a>
+					<img src="images/fun/imEditing.jpg"/>
 				</div>
 				
 				<div class="margin_bottom_10"></div>
@@ -66,22 +66,41 @@ function clearText(field)
 				
 				<p>家里有黑白的老照片，想把它变成彩色照片，看看老一辈人真实的模样，那你可以试试下面这个图像着色（Colorization）算法。你只要拿彩笔在图像上画几笔，剩下的事情就交给算法啦。这个算法除了给黑白图片着色，还能够给视频着色呢！不信就去文献[3]看看。</p>
 				<div id="content_image_wrapper">
-					<a href="images/fun/Colorization.jpg"><img src="images/fun/Colorization.jpg" height="486" width="600"/></a>
+					<img src="images/fun/Colorization.jpg"/>
 				</div>
 
 				<div class="margin_bottom_10"></div>
 				<div class="header_04">3、图像超分辨</div>
 				<p>还记得小时候的红白机画面么，分辨率很低，如果放大的话，渣渣的马赛克就来了，想不起来了？想想《愤怒的小鸟》那个游戏里面马赛克小鸟，实在让人心塞，如果用了这个算法效果绝对就不一样了。该超分辨算法能够将分辨率非常低的图像提取与分辨率无关的向量，最后的高分辨率图像真是碉堡了，完虐普通的最近邻插值法放大的图像。还有人提供了<a href="https://github.com/jerith/depixel">Python源代码</a>呢。</p>
 				<div id="content_image_wrapper">
-					<a href="images/fun/pixel.jpg"><img src="images/fun/pixel.jpg" height="147" width="600"/></a>
+					<img src="images/fun/pixel.jpg"/>
 				</div>
 				
 				<div class="margin_bottom_10"></div>
 				<div class="header_04">4、图像去模糊</div>
 				<p>拍照片的时候手抖，拍出来的照片模糊了怎么办？可以背个三脚架，或者花钱升级相机，变成防抖的。或者你也可以使用以下的图像处理方法，拍完之后处理，就可以得到清晰的图像了。说不定哪一天珍贵的一瞬间拍模糊了，还能用来救救急。</p>
 				<div id="content_image_wrapper">
-					<a href="images/fun/deblur.jpg"><img src="images/fun/deblur.jpg" height="248" width="600"/></a>
-				</div>				
+					<img src="images/fun/deblur.jpg"/>
+				</div>			
+
+				<div class="header_04">5、图像编辑</div>
+				<p>要是拍照的时候把不需要的物体拍进来了，破坏了照片美好的意境怎么办？此时，你可能需要这种图像处理技术[6][7]：将图像中意外出现的东西去掉！看下图，前提是要指定需要去掉的区域（中间一幅Mask图像）。</p>
+				<div id="content_image_wrapper">
+					<img src="images/fun/removeObject.jpg" />
+				</div>						
+				
+				<p>如果拍上去的建筑物看上去破破烂烂的，想填补一下这个破洞，或者想干脆在图像中再复制同一个物体，可以试试下面这个方法[7][8]。顺便说一句，这两个方法都应用到了PhotoShop上了。</p>
+				<div id="content_image_wrapper">
+					<div style="text-align:center">
+					<img src="images/fun/holefill.jpg"/>
+					</div>
+				</div>	
+				</br>
+				<div id="content_image_wrapper">
+					<div style="text-align:center">
+					<img src="images/fun/ann.jpg"/>
+					</div>
+				</div>
 				
 				<div class="margin_bottom_20"></div>
 				<div class="header_05">参考文献</div>
@@ -90,6 +109,10 @@ function clearText(field)
 				<p>[3] Anat Levin, Dani Lischinski, and Yair Weiss. 2004. <a href="http://www.cs.huji.ac.il/~yweiss/Colorization/">Colorization using optimization</a>. ACM Trans. Graph. 23, 3 (August 2004) </p>
 				<p>[4] Johannes Kopf and Dani Lischinski. 2011. <a href="http://research.microsoft.com/en-us/um/people/kopf/pixelart/">Depixelizing Pixel Art</a>ACM Transactions on Graphics (Proceedings of SIGGRAPH 2011).</p>
 				<p>[5] Xu, Li, and Jiaya Jia. 2010. <a href="http://www.cse.cuhk.edu.hk/~leojia/projects/robust_deblur/index.html">Two-phase kernel estimation for robust motion deblurring.</a> ECCV. Springer Berlin Heidelberg, 2010. 157-170.</p>
+				<p>[6] <a href="http://www2.mta.ac.il/~tal/ImageCompletion/">Image Completion</a></p>
+				<p>[7] Y. Wexler, E. Shechtman and M. Irani <a href="http://www.wisdom.weizmann.ac.il/~vision/VideoCompletion.html">"Space-Time Video Completion"</a> Computer Vision and Pattern Recognition (CVPR), Washington, June 2004.</p>
+				<p>[8] Connelly Barnes, Eli Shechtman, Adam Finkelstein, and Dan B Goldman. 2009. <a href="http://gfx.cs.princeton.edu/gfx/pubs/Barnes_2009_PAR/index.php">PatchMatch: a randomized correspondence algorithm for structural image editing</a>. ACM Trans. Graph. 28, 3, Article 24 (July 2009)</p>
+				<p>[9] Connelly Barnes, Eli Shechtman, Dan B Goldman, <a href="http://gfx.cs.princeton.edu/gfx/pubs/Barnes_2010_TGP/index.php">The Generalized PatchMatch Correspondence Algorithm</a>, ECCV, 2010</p>
 				<div class="cleaner"></div>
 			</div>
 			

@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>扑克牌识别</title>
+<meta name="keywords" content="数字图像处理，数字定位，识别" />
+<meta name="description" content="利用数字图像处理的方法，识别扑克牌" />
+<link href="../webstyle.css" rel="stylesheet" type="text/css" />
+<!-- light box -->
+<link rel="stylesheet" href="../css/lightbox.css">
+<script src="../js/jquery-1.11.0.min.js"></script>
+<script src="../js/lightbox.js"></script>
+<!-- customize labels of htmlcommentbox.com -->
+<script src="js/comment.js"></script>
+<script language="javascript" type="text/javascript">
+function clearText(field)
+{
+    if (field.defaultValue == field.value) field.value = '';
+    else if (field.value == '') field.value = field.defaultValue;
+}
+</script>
+</head>
+<body>
+<div id="container">
+	<div id="header_wrapper">
+	<!--  Free Web Templates by TemplateMo.com  -->
+	  <div id="header">
+		
+		<div id="site_logo"></div>
+			
+			<div id="menu">
+				<div id="menu_left"></div>
+				<ul>
+					  <li><a href="../index.html">首页</a></li>
+					  <li><a href="../projects.html" class="current">工程</a></li>
+					  <li><a href="../research.html">研究</a></li>
+					  <li><a href="../blog.html">博客</a></li>
+					  <li><a href="../about.html" class="last">关于我</a></li>
+				</ul>    	
+			</div> <!-- end of menu -->
+		
+		</div>  <!-- end of header -->
+	</div> <!-- end of header wrapper -->
+
+
+	<div id="content_wrapper">
+		<div id="content">
+		
+			<div id="column_w600">
+				
+				<div class="header_02">扑克牌识别</div>
+				<p class="em_text">该项目的目的是识别复杂环境下的扑克牌，由于环境、光照的变化，定位扑克牌上的数字成为了该项目的难点。最终我们开发出来的算法检测成功率达到了99%以上。</p>
+				
+				<div class="header_05">简介</div>
+				<p>因为项目的原因， 需要识别扑克牌的数字。为降低图像处理算法的难度，我们对扑克牌的位置做了限定。扑克牌以横着的方式通过机械进入摄像头拍摄的范围。同时，尽量控制环境中灯光的均匀度。经过这些预先的步骤，我们得到了一系列的图像，以下是具有代表性的一些：</p>
+				<div style="text-align:center">
+					<img src="images/poker/83.jpg" height="100"/>
+					<img src="images/poker/23.jpg" height="100"/>
+					<img src="images/poker/32.jpg" height="100"/>
+					<img src="images/poker/50.jpg" height="100"/>
+					<img src="images/poker/175.jpg" height="100"/>
+					<img src="images/poker/202.jpg" height="100"/>
+					<img src="images/poker/291.jpg" height="100"/>
+					<img src="images/poker/652.jpg" height="100"/>
+				</div>
+				<br />
+				<p>从图上可以看出，扑克牌在图像中的位置相对固定，最大的不确定条件是光照：即使努力调整光源，整幅图像曝光还是不均匀，几乎每幅图像都出现了过曝的情况。</p>
+				<div class="header_05">算法说明</div>
+				<p>要识别扑克牌，重点是定位牌面上数字的位置，如果能准确圈定数字，就可以使用分类或者模板匹配来进行识别。根据这一思路，我们开发出了一个图像处理算法，其主要步骤是：</p>
+				<ol>
+				<li>对图像进行阈值分割，得到一个二值图像。由于环境光照的不稳定，所使用的阈值要根据图像的曝光程度进行自适应。</li>
+				<li>求二值图像的连通域，保留合适大小的连通域。此时获得的连通域包括很多非数字的连通域，其中，花色获得连通域无论是在面积还是形状都跟数字的类似，是最大的干扰因素。</li>
+				<li>通过大量的统计，获得牌面上数字区域的特征，利用这些特征找到最合适的连通域。此连通域就是我们要找的数字。</li>
+				<li>若通过以上步骤没有得到合适的结果，调整二值化的阈值，回到第(1)步循环求解，知道达到最大循环次数或者找到数字为止。</li>
+				</ol>
+				
+				<div class="header_05">结果</div>
+				<p>经过以上算法的处理，我们定位出来的数字区域是这样的：</p>
+				<div style="text-align:center">
+					<img src="images/poker/bin_83.jpg" height="100"/>
+					<img src="images/poker/bin_23.jpg" height="100"/>
+					<img src="images/poker/bin_32.jpg" height="100"/>
+					<img src="images/poker/bin_50.jpg" height="100"/>
+					<img src="images/poker/result_83.jpg" height="100"/>
+					<img src="images/poker/result_23.jpg" height="100"/>
+					<img src="images/poker/result_32.jpg" height="100"/>
+					<img src="images/poker/result_50.jpg" height="100"/>
+					<img src="images/poker/bin_175.jpg" height="100"/>
+					<img src="images/poker/bin_202.jpg" height="100"/>
+					<img src="images/poker/bin_291.jpg" height="100"/>
+					<img src="images/poker/bin_652.jpg" height="100"/>
+					<img src="images/poker/result_175.jpg" height="100"/>
+					<img src="images/poker/result_202.jpg" height="100"/>
+					<img src="images/poker/result_291.jpg" height="100"/>
+					<img src="images/poker/result_652.jpg" height="100"/>
+				</div>
+				<br/>
+				<p class="note"><span>说明：</span>牌面中的“王”跟数字的特征有比较明显的区别，因此在这一步中我们已经能够将王正确地识别出来。在结果图中，王由绿色框标记。当牌面的数字所在的位置被准确的定位后，识别就变得很简单了，提取定位的区域进行模板匹配就能正确识别数字。通过实际测试，算法准确率能达到99%以上，导致失败的情况主要是扑克牌上的数字出现粘连，或者数字图像模糊了：</p>
+				<div style="text-align:center">
+					<img src="images/poker/396.jpg" height="100"/>
+					<span style="margin-right:50px"> </span>
+					<img src="images/poker/662.jpg" height="100"/>
+				</div>
+				<br />
+				<p>试验结果表明该项目达到预期的目标，同时，该算法复杂度很低，成功应用在嵌入式系统上。</p>
+				<p style="text-indent:0;text-align:right">Last update: <!-- #BeginDate format:IS1 -->2013-09-20<!-- #EndDate --></p>
+				<!-- begin htmlcommentbox.com -->			
+				<div id="HCB_comment_box"></div>
+				<script type="text/javascript" id="hcb"> /*<!--*/ if(!window.hcb_user){hcb_user={};} (function(){var s=document.createElement("script"), l=(hcb_user.PAGE || ""+window.location), h="//www.htmlcommentbox.com";s.setAttribute("type","text/javascript");s.setAttribute("src", h+"/jread?page="+encodeURIComponent(l).replace("+","%2B")+"&mod=%241%24wq1rdBcg%24whFr%2FAI4JbJajD84P9cq7%2F"+"&opts=16862&num=10");if (typeof s!="undefined") document.getElementsByTagName("head")[0].appendChild(s);})(); /*-->*/ </script>
+				<!-- end htmlcommentbox.com -->
+				
+			</div>
+			
+			<!--文章列表-->
+			<script src="../js/projectlist.js"></script>
+			
+			<div class="cleaner"></div>
+		</div> <!-- end of content wrapper -->
+	</div> <!-- end of content wrapper -->
+</div> <!-- end of container -->
+
+<div id="footer_wrapper">
+
+	<div id="footer">
+    	<script src="../js/footer.js"></script>
+        <div class="cleaner"></div>
+    </div> <!-- end of footer -->
+    <!--  Free CSS Templates by TemplateMo.com  -->
+</div> <!-- end of footer -->
+        
+</body>
+</html>

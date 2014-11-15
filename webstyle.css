@@ -460,8 +460,8 @@ img {
 
 /* comment box */
 #HCB_comment_box {
-  width:600px;
-  resize: vertical;
+  width: 600px;
+  
 }
 
 #HCB_comment_box #hcb_form_content,
@@ -472,6 +472,7 @@ img {
 }
 
 #HCB_comment_box form {
-  margin: 0 0 18px;
+  margin: 5px 0 18px;
+  resize: vertical;
 }
 

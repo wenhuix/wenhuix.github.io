@@ -23,6 +23,18 @@ p {
 	text-indent: 2em; /*首行缩进*/
 }
 
+p.tip span, p.note span, p.important span {
+	font-weight:bold;
+}
+
+p.important span {
+	color:#dd0000;
+	}
+	
+p.tip span {
+	color:#ff9955;
+	}
+
 img {
 	margin: 0px;
 	padding: 0px;

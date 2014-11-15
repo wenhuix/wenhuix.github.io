@@ -461,6 +461,7 @@ img {
 /* comment box */
 #HCB_comment_box {
   width:600px;
+  max-width:600px;
 }
 
 #HCB_comment_box #hcb_form_content,

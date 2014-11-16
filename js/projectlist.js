@@ -3,7 +3,7 @@ document.write("<div class=\"header_03\">文章列表<\/div>");
 	document.write("<div class=\"column_w300_section_01\">");
 		document.write("<p\">2014-10-21 <a href=\"http://wenhuix.github.io\/project\/comdbg.html\">串口调试助手<\/a><\/p>");
 		document.write("<p\">2014-03-16 <a href=\"http://wenhuix.github.io\/project\/xunfeivoice.html\">快递员助手<\/a><\/p>");
-		document.write("<p\">2013-09-20 <a href=\"http://wenhuix.github.io\/project\/poker.html\"><\/a>扑克牌识别<\/p>");
+		document.write("<p\">2013-09-20 <a href=\"http://wenhuix.github.io\/project\/poker.html\">扑克牌识别<\/a><\/p>");
 		document.write("<p\">2012-09-10 <a href=\"http://wenhuix.github.io\/project\/motris.html\">智能交通中的车辆跟踪<\/a><\/p>");
 	document.write("<\/div>");
 document.write("<div class=\"cleaner\"><\/div>");

@@ -23,6 +23,18 @@ p {
 	text-indent: 2em; /*首行缩进*/
 }
 
+p.tip span, p.note span, p.important span {
+	font-weight:bold;
+}
+
+p.important span {
+	color:#dd0000;
+	}
+	
+p.tip span {
+	color:#ff9955;
+	}
+
 img {
 	margin: 0px;
 	padding: 0px;
@@ -460,7 +472,7 @@ img {
 
 /* comment box */
 #HCB_comment_box {
-  width:600px;
+  width: 600px;
 }
 
 #HCB_comment_box #hcb_form_content,
@@ -468,5 +480,9 @@ img {
 #HCB_comment_box #hcb_form_name, 
 #HCB_comment_box #hcb_form_website {
   background-color:#ffd;
+}
+
+#HCB_comment_box form {
+  margin: 1px 0 18px;
 }
 

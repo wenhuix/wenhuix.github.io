@@ -449,7 +449,7 @@ img {
 
 #footer .footer_menu_list li {
     float:left;
-	margin: 10px 20px 0 0;
+	margin: 10px 10px 0 0;
 	padding: 0px;
 }
 
@@ -460,7 +460,7 @@ img {
 }
 
 #footer .copyright{
-	margin: 10px 20px 0 0;
+	margin: 10px 0 0 0;
 	float:right;
 }
 

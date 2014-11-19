@@ -8,15 +8,15 @@
 <link rel="stylesheet" href="../webstyle.css" type="text/css" />
 <!-- Latex -->
 <script type="text/javascript" src="http://latex.codecogs.com/latexit.js"></script>
+<script type="text/javascript">
+LatexIT.add('p',true);
+</script>
 <!-- light box -->
 <link rel="stylesheet" href="../css/lightbox.css">
 <script src="../js/jquery-1.11.0.min.js"></script>
 <script src="../js/lightbox.js"></script>
 <!-- customize labels of htmlcommentbox.com -->
 <script src="../js/comment.js"></script>
-<style>
-	pre .latex { border:3px solid red ; font-align:center}
-</style>
 <script language="javascript" type="text/javascript">
 function clearText(field)
 {
@@ -72,7 +72,7 @@ function clearText(field)
 						v(x) = u(x) + \varepsilon (x),\quad x \in \Omega ,
 					</div>
 				</div>
-				<p>其中<span lang="latex">u(x)</span>是原来没有噪声的图像。<span lang="latex">x</span>是像素集合，<span lang="latex">\varepsilon (x)</span>是噪声带来的影响。从这个公式可以看出，噪声是直接叠加在原始图像上的，这个噪声可以是椒盐噪声、高斯噪声。理论上来说，如果能够精确地获得噪声，用输入图像减去噪声就可以恢复出原始图像。但现实往往很骨感，除非明确地知道噪声叠加的方式，否则噪声很难单独求出来。</p>
+				<p>其中$u(x)$是原来没有噪声的图像。$x$是像素集合，$\varepsilon (x)$是噪声带来的影响。从这个公式可以看出，噪声是直接叠加在原始图像上的，这个噪声可以是椒盐噪声、高斯噪声。理论上来说，如果能够精确地获得噪声，用输入图像减去噪声就可以恢复出原始图像。但现实往往很骨感，除非明确地知道噪声叠加的方式，否则噪声很难单独求出来。</p>
 				<div class="margin_bottom_10"></div>
 				
 				<div class="header_05">NL-Means算法</div>

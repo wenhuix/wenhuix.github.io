@@ -20,6 +20,7 @@ a:active, a:hover {text-decoration: underline;}
 p {
 	margin: 0px;
 	padding: 0px;
+	color: #333;
 	text-indent: 2em; /*首行缩进*/
 }
 

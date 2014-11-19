@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>图像去噪</title>
+<meta name="keywords" content="图像处理，图像去噪，噪声抑制，高斯噪声" />
+<meta name="description" content="本文讨论几种效果比较好的图像去噪算法。包括Non-Local Means、BM3D等。" />
+<link rel="stylesheet" href="../webstyle.css" type="text/css" />
+<!-- Latex -->
+<script type="text/javascript" src="http://latex.codecogs.com/latexit.js"></script>
+<!-- light box -->
+<link rel="stylesheet" href="../css/lightbox.css">
+<script src="../js/jquery-1.11.0.min.js"></script>
+<script src="../js/lightbox.js"></script>
+<!-- customize labels of htmlcommentbox.com -->
+<script src="../js/comment.js"></script>
+<style>
+	pre .latex { border:3px solid red ; font-align:center}
+</style>
+<script language="javascript" type="text/javascript">
+function clearText(field)
+{
+    if (field.defaultValue == field.value) field.value = '';
+    else if (field.value == '') field.value = field.defaultValue;
+}
+</script>
+</head>
+<body>
+<div id="container">
+	<div id="header_wrapper">
+	<!--  Free Web Templates by TemplateMo.com  -->
+	  <div id="header">
+		
+		<div id="site_logo"></div>
+			
+			<div id="menu">
+				<div id="menu_left"></div>
+				<ul>
+					  <li><a href="../index.html">首页</a></li>
+					  <li><a href="../projects.html">工程</a></li>
+					  <li><a href="../research.html" class="current">研究</a></li>
+					  <li><a href="../blog.html">博客</a></li>
+					  <li><a href="../about.html" class="last">关于我</a></li>
+				</ul>    	
+			</div> <!-- end of menu -->
+		
+		</div>  <!-- end of header -->
+	</div> <!-- end of header wrapper -->
+
+	<div id="content_wrapper">
+		<div id="content">
+		
+			<div id="column_w600">
+				
+				<div class="header_02">图像去噪算法</div>
+				
+				<p class="em_text">图像去噪是非常基础也是非常必要的研究，去噪常常在进行更高级的图像处理之前进行，是图像处理的基础，可惜的是，目前去噪算法并没有很好的解决方案，实际应用中，更多的是在效果去运算复杂度之间求一个平衡，再一次验证了我老师的一句话：</p>
+				<div class="content_section_01">
+					所有的工程问题最后都是最优化问题。 
+				</div>
+				<div class="margin_bottom_20"></div>
+				<p class="tip">（<span>注意：</span>本文含有公式，在线转换需要时间，请耐心等待一下。）</p>
+				<div class="margin_bottom_10"></div>
+				<div class="header_05">噪声模型</div>
+				<div class="margin_bottom_10"></div>
+				
+				<p>图像中噪声的来源有许多种，这些噪声来源于图像采集、传输、压缩等各个方面。噪声的种类也各不相同，比如椒盐噪声，高斯噪声等，针对不同的噪声有不同的处理算法。</p>
+				
+				<p>对于输入的带有噪声的图像<span lang="latex">v(x)</span>，其加性噪声可以用一个方程来表示：</p>
+				<div style="text-align:center">
+					<div lang="latex">
+						v(x) = u(x) + \varepsilon (x),\quad x \in \Omega ,
+					</div>
+				</div>
+				<p>其中<span lang="latex">u(x)</span>是原来没有噪声的图像。<span lang="latex">x</span>是像素集合，<span lang="latex">\varepsilon (x)</span>是噪声带来的影响。从这个公式可以看出，噪声是直接叠加在原始图像上的，这个噪声可以是椒盐噪声、高斯噪声。理论上来说，如果能够精确地获得噪声，用输入图像减去噪声就可以恢复出原始图像。但现实往往很骨感，除非明确地知道噪声叠加的方式，否则噪声很难单独求出来。</p>
+				<div class="margin_bottom_10"></div>
+				
+				<div class="header_05">NL-Means算法</div>
+				<div class="margin_bottom_10"></div>
+				<p>NL-Means的全称是：Non-Local Means，直译过来是非局部平均，该算法不仅仅利用了像素周围的局部区域的信息，而是利用了整幅图像。NL-Means的滤波过程可以用下面公式来表示：</p>
+				
+				<div style="text-align:center">
+					<div lang="latex">
+						\tilde u(x) = \sum\limits_{y \in {\Omega _x}} {w(x,y)v(y)},
+					</div>
+				</div>
+
+				<div class="header_05">BM3D算法</div>
+				<div class="margin_bottom_10"></div>
+				
+				<br/>
+				<p style="text-indent:0;text-align:right">Last update: <!-- #BeginDate format:IS1 -->2014-11-13<!-- #EndDate --></p>
+				
+				<!-- begin htmlcommentbox.com -->
+				<div id="HCB_comment_box"></div>
+				<script type="text/javascript" id="hcb"> /*<!--*/ if(!window.hcb_user){hcb_user={};} (function(){var s=document.createElement("script"), l=(hcb_user.PAGE || ""+window.location), h="//www.htmlcommentbox.com";s.setAttribute("type","text/javascript");s.setAttribute("src", h+"/jread?page="+encodeURIComponent(l).replace("+","%2B")+"&mod=%241%24wq1rdBcg%24whFr%2FAI4JbJajD84P9cq7%2F"+"&opts=16862&num=10");if (typeof s!="undefined") document.getElementsByTagName("head")[0].appendChild(s);})(); /*-->*/ </script>
+				<!-- end htmlcommentbox.com -->
+				
+				<div class="cleaner"></div>
+			</div>
+			
+			<!--文章列表-->
+			<script src="../js/researchlist.js"></script>
+		
+			<div class="cleaner"></div>
+		</div> <!-- end of content -->
+	</div> <!-- end of content wrapper -->
+</div> <!-- end of container -->
+
+<div id="footer_wrapper">
+
+	<div id="footer">
+    	<script src="../js/footer.js"></script>
+        <div class="cleaner"></div>
+    </div> <!-- end of footer -->
+    <!--  Free CSS Templates by TemplateMo.com  -->
+</div> <!-- end of footer -->
+        
+    </body>
+</html>

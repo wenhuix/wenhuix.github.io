@@ -6,6 +6,10 @@
 <meta name="keywords" content="安卓，Android，蓝牙，Bluetooth，小车，大脚车" />
 <meta name="description" content="改造大脚车，加装蓝牙，用安卓手机通过蓝牙控制大脚车的运动。" />
 <link href="../webstyle.css" rel="stylesheet" type="text/css" />
+<!-- light box -->
+<link rel="stylesheet" href="../css/lightbox.css">
+<script src="../js/jquery-1.11.0.min.js"></script>
+<script src="../js/lightbox.js"></script>
 <!-- customize labels of htmlcommentbox.com -->
 <script src="../js/comment.js"></script>
 <script language="javascript" type="text/javascript">
@@ -46,19 +50,37 @@ function clearText(field)
 				
 				<div class="header_02">安卓小车</div>
 				<p class="em_text">这个工程是毕业论文的一部分，主要工作是改造一辆能够被安卓手机控制的小车。通过对安卓手机编程，能够在蓝牙的通信范围内遥控小车。</p>
-				
+				<div class="margin_bottom_10"></div>  
 				<div class="header_05">简介</div>
 				
-				<p>整个工程可以分为两部分：</p>
+				<p>小时候家里玩具少，看到遥控车总是很羡慕。正好毕业设计题目自选，就想着做一个能被手机控制的安卓小车。因为实验室方向是图像处理和模式识别相关专业，有意将这个安卓小车作为一个模式识别的实验平台。安卓手机可以安装在小车上，根据手机采集的图像来进一步的实验。任何有趣的想法可以移植到手机上控制小车自动运行。</p>
 				
-				<p></p>
+				<p>总的来说，这个工程可以分为两部分：小车端和手机端。下面，将分别对这两个模块进行介绍。</p>
+				
+				<div class="margin_bottom_10"></div>  
+				<div class="header_05">小车</div>
+				<p>小车是在淘宝上买的模型，随手一搜大脚车到处都是。这个模型车自带2.4G的遥控器，遥控范围大概在100m左右。采用的是7.2V直流电机，虽然电压不高，但是性能绝对强劲，下面是小车刚买回来的样子，左边一幅图车顶加了个摄像头，右边的图拆了外壳，霸气外泄。</p>
+				<div style="text-align:center">
+					<a href="images/androidcar/truck.jpg" data-lightbox="image-set" data-title="大脚车"><img src="images/androidcar/truck.jpg" height="150"/></a>
+					<a href="images/androidcar/image09.jpg" data-lightbox="image-set" data-title="大脚车"><img src="images/androidcar/image09.jpg" height="150"/></a>
+				</div>
+				<br/>
+				<p>拆开仔细研究之后发现小车前进后退的动力是直流电机，通过一块L298芯片驱动（图中的电调），而左右的转向是通过一个舵机控制前轮来实现。</p>
+				<div style="text-align:center">
+					<a href="images/androidcar/image04.png" data-lightbox="image-set" data-title="内部图"><img src="images/androidcar/image04.png" height="160"/></a>
+					<a href="images/androidcar/image02.png" data-lightbox="image-set" data-title="连线图"><img src="images/androidcar/image02.png" height="160"/></a>
+				</div>
+				
+				
+				
+				<div class="margin_bottom_10"></div>  
+				<div class="header_05">安卓客户端</div>	
 
-				<br />
+				
 				<div class="header_05">代码</div>
-				<p class="em_text">请访问：<a href="https://github.com/wenhuix/ExpressAssistant">https://github.com/wenhuix/ExpressAssistant</a></p>
+				<p class="em_text">请访问：<a href="https://github.com/wenhuix/BluetoothCar">https://github.com/wenhuix/BluetoothCar</a></p>
 				
-				<div class="header_05">参考文献</div>
-				
+				<div class="header_05">参考资料</div>
 				
 				<p><a href="http://fritzing.org/home/" target="_blank">http://fritzing.org/home/</a></p>
 				

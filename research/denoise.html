@@ -6,10 +6,17 @@
 <meta name="keywords" content="图像处理，图像去噪，噪声抑制，高斯噪声" />
 <meta name="description" content="本文讨论几种效果比较好的图像去噪算法。包括Non-Local Means、BM3D等。" />
 <link rel="stylesheet" href="../webstyle.css" type="text/css" />
-<!-- Latex -->
-<script type="text/javascript" src="http://latex.codecogs.com/latexit.js"></script>
-<script type="text/javascript">
-LatexIT.add('p',true);
+
+<!-- math -->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        TeX: {equationNumbers: {autoNumber: ["AMS"], useLabelIds: true}},
+        "HTML-CSS": {linebreaks: {automatic: true}},
+        SVG: {linebreaks: {automatic: true}},
+		tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+		displayMath: [ ["$$","$$"], ["\\[", "\\]"] ]
+    });
 </script>
 <!-- light box -->
 <link rel="stylesheet" href="../css/lightbox.css">
@@ -54,39 +61,64 @@ function clearText(field)
 				
 				<div class="header_02">图像去噪算法</div>
 				
-				<p class="em_text">图像去噪是非常基础也是非常必要的研究，去噪常常在进行更高级的图像处理之前进行，是图像处理的基础，可惜的是，目前去噪算法并没有很好的解决方案，实际应用中，更多的是在效果去运算复杂度之间求一个平衡，再一次验证了我老师的一句话：</p>
+				<p class="em_text">图像去噪是非常基础也是非常必要的研究，去噪常常在更高级的图像处理之前进行，是图像处理的基础。可惜的是，目前去噪算法并没有很好的解决方案，实际应用中，更多的是在效果和运算复杂度之间求得一个平衡，再一次验证了我老师的一句话：</p>
 				<div class="content_section_01">
 					所有的工程问题最后都是最优化问题。 
 				</div>
-				<div class="margin_bottom_20"></div>
-				<p class="tip">（<span>注意：</span>本文含有公式，在线转换需要时间，请耐心等待一下。）</p>
+				<br />
+				<p>好了，废话不多说，来看看最新的去噪算法吧。</p>
 				<div class="margin_bottom_10"></div>
 				<div class="header_05">噪声模型</div>
 				<div class="margin_bottom_10"></div>
 				
 				<p>图像中噪声的来源有许多种，这些噪声来源于图像采集、传输、压缩等各个方面。噪声的种类也各不相同，比如椒盐噪声，高斯噪声等，针对不同的噪声有不同的处理算法。</p>
 				
-				<p>对于输入的带有噪声的图像<span lang="latex">v(x)</span>，其加性噪声可以用一个方程来表示：</p>
-				<div style="text-align:center">
-					<div lang="latex">
-						v(x) = u(x) + \varepsilon (x),\quad x \in \Omega ,
-					</div>
-				</div>
-				<p>其中$u(x)$是原来没有噪声的图像。$x$是像素集合，$\varepsilon (x)$是噪声带来的影响。从这个公式可以看出，噪声是直接叠加在原始图像上的，这个噪声可以是椒盐噪声、高斯噪声。理论上来说，如果能够精确地获得噪声，用输入图像减去噪声就可以恢复出原始图像。但现实往往很骨感，除非明确地知道噪声叠加的方式，否则噪声很难单独求出来。</p>
+				<p>对于输入的带有噪声的图像<span lang="latex">v(x)</span>，其加性噪声可以用一个方程来表示：
+				$$v(x) = u(x) + \varepsilon (x),\quad x \in \Omega ,$$</p>
+				<p>其中$u(x)$是原来没有噪声的图像。$x$是像素集合，$\varepsilon (x)$是噪声带来的影响。$\Omega$是像素的集合，也就是整幅图像。从这个公式可以看出，噪声是直接叠加在原始图像上的，这个噪声可以是椒盐噪声、高斯噪声。理论上来说，如果能够精确地获得噪声，用输入图像减去噪声就可以恢复出原始图像。但现实往往很骨感，除非明确地知道噪声生成的方式，否则噪声很难单独求出来。</p>
 				<div class="margin_bottom_10"></div>
 				
 				<div class="header_05">NL-Means算法</div>
 				<div class="margin_bottom_10"></div>
-				<p>NL-Means的全称是：Non-Local Means，直译过来是非局部平均，该算法不仅仅利用了像素周围的局部区域的信息，而是利用了整幅图像。NL-Means的滤波过程可以用下面公式来表示：</p>
-				
-				<div style="text-align:center">
-					<div lang="latex">
-						\tilde u(x) = \sum\limits_{y \in {\Omega _x}} {w(x,y)v(y)},
-					</div>
-				</div>
+				<p>NL-Means的全称是：Non-Local Means，直译过来是非局部平均，该算法不仅仅利用了像素周围的局部区域的信息，更是利用了整幅图像来进行去噪。NL-Means的滤波过程可以用下面公式来表示：
+						$$\tilde u(x) = \sum\limits_{y \in {\Omega _x}} {w(x,y)v(y)},$$
+				</p>
+				<p>在这个公式中，$w(x,y)$是一个权重，表示在原始图像$v$中，像素 $x$ 和像素 $y$ 的相似度。这个权重要大于0，同时，权重的和为1，用公式表示是这样：
+				$$w(x,y) > 0\quad and\quad \sum\limits_{y \in {\Omega _x}} {w(x,y) = 1}, \quad \forall x \in \Omega ,y \in {\Omega _x}$$
+				</p>
 
+				<p>$\Omega _x$是像素 $x$ 的邻域。这个公式可以这样理解：对于图像中的每一个像素 $x$ ，滤波之后的结果等于它邻域中像素 $y$ 的加权和，加权的权重等于 $x$ 和 $y$ 的相似度。这个邻域也称为搜索区域，搜索区域越大，找到相似像素的机会也越大，但同时计算量也是成指数上升。在提出这个算法的文献中，这个区域是整幅图像！导致的结果是处理一幅512x512大小的图像，最少也得几分钟。</p>
+				<p>衡量像素相似度的方法有很多，最常用的是根据两个像素的亮度值的差的平方来估计。但因为有噪声的存在，单独的一个像素并不可靠。对此解决方法是，考虑它们的邻域，只有邻域相似度高才能说这两个像素的相似度高。衡量两个图像块的相似度最常用的方法是计算他们之间的欧氏距离：
+				$$w(x,y) = {1 \over {n(x)}}\exp ({{\left\| {{\bf{V}}(x) - {\bf{V}}(y)} \right\|_{2,a}^2} \over {{h^2}}})$$</p>
+				
+				<p>其中： $n(x)$ 是一个归一化的因子，是所有权重的和，对每个权重除以该因子后，使得权重满足和为1的条件。 $h>0$ 是滤波系数，控制指数函数的衰减从而改变欧氏距离的权重。 ${\bf{V}}(x)$ 和 ${\bf{V}}(y)$ 代表了像素 $x$ 和像素 $y$ 的邻域，这个邻域常称为块(Patch)邻域。块邻域一般要小于搜索区域。 $a>0$ 是高斯内核的标准偏差。</p>
+				<p>讲了这么多，是时候给出图片来说明问题了：</p>
+				<div style="text-align:center">
+					<a href="images/denoise/nlm1.jpg" data-lightbox="image-set" data-title="权重分布图"><img src="images/denoise/nlm1.jpg" height="210"/></a>
+				</div>
+				<p>这6组图像中，左边是原图，中心的白色色块代表了像素$x$块邻域，右边是计算出来的权重$w(x,y)$图，权重范围从0（黑色）到1（白色）。这个块邻域在整幅图像中移动，计算图像中其他区域跟这个块的相似度，相似度越高，得到的权重越大。最后将这些相似的像素值根据归一化之后的权重加权求和，得到的就是去噪之后的图像了。</p>
+				<p>最后来看一下这个算法的去噪效果[3]：</p>
+				<div style="text-align:center">
+					<a href="images/denoise/cinput.jpg" data-lightbox="nlm-set" data-title="原始图像"><img src="images/denoise/cinput.jpg" height="180"/></a>
+					<a href="images/denoise/cnoisy.jpg" data-lightbox="nlm-set" data-title="加入方差15的高斯噪声"><img src="images/denoise/cnoisy.jpg" height="180"/></a>
+					<a href="images/denoise/coutput.jpg" data-lightbox="nlm-set" data-title="结果图"><img src="images/denoise/coutput.jpg" height="180"/></a>
+				</div>
+				<br/>
+				
 				<div class="header_05">BM3D算法</div>
 				<div class="margin_bottom_10"></div>
+				
+				
+				<div class="header_05">算法比较</div>
+				<div class="margin_bottom_10"></div>
+				
+				
+				<div class="header_05">参考文献</div>
+				<div class="margin_bottom_10"></div>
+				<p>[1] Buades A, Coll B, Morel J M. A non-local algorithm for image denoising[C]//Computer Vision and Pattern Recognition, 2005. CVPR 2005. IEEE Computer Society Conference on. IEEE, 2005, 2: 60-65.</p>
+				<p>[2] Buades A, Coll B, Morel J M. Nonlocal image and movie denoising[J]. International journal of computer vision, 2008, 76(2): 123-139.</p>
+				<p>[3] Antoni Buades, Bartomeu Coll, and Jean-Michel Morel, Non-Local Means Denoising, Image Processing On Line, 1 (2011). <a href="http://dx.doi.org/10.5201/ipol.2011.bcm_nlm" target="_blank">http://dx.doi.org/10.5201/ipol.2011.bcm_nlm</a></p>
+				<p>[4] Jacques Froment, Parameter-Free Fast Pixelwise Non-Local Means Denoising, Image Processing On Line, 4 (2014), pp. 300–326. <a href="http://dx.doi.org/10.5201/ipol.2014.120" target="_blank">http://dx.doi.org/10.5201/ipol.2014.120</a></p>
 				
 				<br/>
 				<p style="text-indent:0;text-align:right">Last update: <!-- #BeginDate format:IS1 -->2014-11-13<!-- #EndDate --></p>

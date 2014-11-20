@@ -81,22 +81,23 @@ function clearText(field)
 				<div class="header_05">NL-Means算法</div>
 				<div class="margin_bottom_10"></div>
 				<p>NL-Means的全称是：Non-Local Means，直译过来是非局部平均，该算法不仅仅利用了像素周围的局部区域的信息，更是利用了整幅图像来进行去噪。NL-Means的滤波过程可以用下面公式来表示：
-						$$\tilde u(x) = \sum\limits_{y \in {\Omega _x}} {w(x,y)v(y)},$$
+						$$\tilde u(x) = \sum\limits_{y \in {\Omega _x}} {w(x,y)v(y)}.$$
 				</p>
 				<p>在这个公式中，$w(x,y)$是一个权重，表示在原始图像$v$中，像素 $x$ 和像素 $y$ 的相似度。这个权重要大于0，同时，权重的和为1，用公式表示是这样：
-				$$w(x,y) > 0\quad and\quad \sum\limits_{y \in {\Omega _x}} {w(x,y) = 1}, \quad \forall x \in \Omega ,y \in {\Omega _x}$$
+				$$w(x,y) > 0\quad and\quad \sum\limits_{y \in {\Omega _x}} {w(x,y) = 1}, \quad \forall x \in \Omega ,y \in {\Omega _x} .$$
 				</p>
 
-				<p>$\Omega _x$是像素 $x$ 的邻域。这个公式可以这样理解：对于图像中的每一个像素 $x$ ，滤波之后的结果等于它邻域中像素 $y$ 的加权和，加权的权重等于 $x$ 和 $y$ 的相似度。这个邻域也称为搜索区域，搜索区域越大，找到相似像素的机会也越大，但同时计算量也是成指数上升。在提出这个算法的文献中，这个区域是整幅图像！导致的结果是处理一幅512x512大小的图像，最少也得几分钟。</p>
+				<p>$\Omega _x$是像素 $x$ 的邻域。这个公式可以这样理解：对于图像中的每一个像素 $x$ ，去噪之后的结果等于它邻域中像素 $y$ 的加权和，加权的权重等于 $x$ 和 $y$ 的相似度。这个邻域也称为搜索区域，搜索区域越大，找到相似像素的机会也越大，但同时计算量也是成指数上升。在提出这个算法的文献中，这个区域是整幅图像！导致的结果是处理一幅512x512大小的图像，最少也得几分钟。</p>
 				<p>衡量像素相似度的方法有很多，最常用的是根据两个像素的亮度值的差的平方来估计。但因为有噪声的存在，单独的一个像素并不可靠。对此解决方法是，考虑它们的邻域，只有邻域相似度高才能说这两个像素的相似度高。衡量两个图像块的相似度最常用的方法是计算他们之间的欧氏距离：
-				$$w(x,y) = {1 \over {n(x)}}\exp ({{\left\| {{\bf{V}}(x) - {\bf{V}}(y)} \right\|_{2,a}^2} \over {{h^2}}})$$</p>
+				$$w(x,y) = {1 \over {n(x)}}\exp ({{\left\| {{\bf{V}}(x) - {\bf{V}}(y)} \right\|_{2,a}^2} \over {{h^2}}}).$$</p>
 				
 				<p>其中： $n(x)$ 是一个归一化的因子，是所有权重的和，对每个权重除以该因子后，使得权重满足和为1的条件。 $h>0$ 是滤波系数，控制指数函数的衰减从而改变欧氏距离的权重。 ${\bf{V}}(x)$ 和 ${\bf{V}}(y)$ 代表了像素 $x$ 和像素 $y$ 的邻域，这个邻域常称为块(Patch)邻域。块邻域一般要小于搜索区域。${\left\| {{\bf{V}}(x) - {\bf{V}}(y)} \right\|_{2,a}^2}$ 是两个邻域的高斯加权欧式距离。其中 $a>0$ 是高斯核的标准差。在求欧式距离的时候，不同位置的像素的权重是不一样的，距离块的中心越近，权重越大，距离中心越远，权重越小，权重服从高斯分布。实际计算中考虑到计算量的问题，常常采用均匀分布的权重。</p>
 				<p>讲了这么多，是时候给出图片来说明问题了：</p>
 				<div style="text-align:center">
 					<a href="images/denoise/nlm1.jpg" data-lightbox="image-set" data-title="权重分布图"><img src="images/denoise/nlm1.jpg" height="210"/></a>
 				</div>
-				<p>这6组图像中，左边是原图，中心的白色色块代表了像素$x$块邻域，右边是计算出来的权重$w(x,y)$图，权重范围从0（黑色）到1（白色）。这个块邻域在整幅图像中移动，计算图像中其他区域跟这个块的相似度，相似度越高，得到的权重越大。最后将这些相似的像素值根据归一化之后的权重加权求和，得到的就是去噪之后的图像了。</p>
+				<p>这6组图像中，左边是原图，中心的白色色块代表了像素 $x$ 块邻域，右边是计算出来的权重 $w(x,y)$ 图，权重范围从0（黑色）到1（白色）。这个块邻域在整幅图像中移动，计算图像中其他区域跟这个块的相似度，相似度越高，得到的权重越大。最后将这些相似的像素值根据归一化之后的权重加权求和，得到的就是去噪之后的图像了。</p>
+				<p>这个算法参数的选择也有讲究，一般而言，考虑到算法复杂度，搜索区域大概取21x21，相似度比较的块的可以取7x7。实际中，常常需要根据噪声来选取合适的参数。当高斯噪声的标准差 $\sigma$ 越大时，为了使算法鲁棒性更好，需要增大块区域，块区域增加同样也需要增加搜索区域。同时，滤波系数 $h$ 与 $\sigma$ 正相关：$h=k\sigma $，当块变大时，$k$ 需要适当减小。</p>
 				<p>最后来看一下这个算法的去噪效果[3]：</p>
 				<div style="text-align:center">
 					<a href="images/denoise/cinput.jpg" data-lightbox="nlm-set" data-title="原始图像"><img src="images/denoise/cinput.jpg" height="180"/></a>
@@ -111,8 +112,14 @@ function clearText(field)
 				
 				<div class="header_05">算法比较</div>
 				<div class="margin_bottom_10"></div>
+				<p>要比较算法效果，必然离不开评价体系。由于人带有主观因素，每个人的评价可能都不一样，因此有必要用几种客观的评价方法来对结果进行评价。目前，两种用得比较多的评价方式是<strong>MSE</strong>(Mean-Squared Error，均方误差)和<strong>PSNR</strong>(Peak Signal-to-Noise Ratio，峰值信噪比)。</p>
+				<p>两幅$M \times N$大小的图像$u(x,y)$和$v(x,y)$的MSE计算公式如下：$${e_{MSE}} = {1 \over {MN}}\sum\limits_{n = 1}^N {\sum\limits_{m = 1}^M {{{[u(n,m) - v(n,m)]}^2}} } .$$</p>
+				<p>在这个公式里没有表现出像素值范围对结果的影响，同样的均方误差8-bit的图像和12-bit的图像显然没有可比性。因此，又引入了峰值信噪比：$$PSNR =  - 10{\log _{10}}{{{e_{MSE}}} \over {{s^2}}}.$$ </p><p>上式中，$s$ 是图像像素最大值，对于8-bit的图像而言 $s$=255，PSNR的单位是分贝(dB)。 通常 PSNR 值越高表示品质越好，一般而言，当 PSNR&lt;30dB 时，代表以人的肉眼看起来是不能容忍的范围。因此大部分PSNR值都要&gt;30dB。但PSNR高，并不代表图像质量一定好，有时候还是必须要靠人的肉眼去辅助判断图像的质量才较为正确。</p>
+				<div style="text-align:center">
+					<a href="images/denoise/psnr.gif" data-lightbox="psnr-set" data-title="PSNR"><img src="images/denoise/psnr.gif" width="550"/></a>
+				</div>
 				
-				
+				<br/>
 				<div class="header_05">参考文献</div>
 				<div class="margin_bottom_10"></div>
 				<p>[1] Buades A, Coll B, Morel J M. A non-local algorithm for image denoising[C]//Computer Vision and Pattern Recognition, 2005. CVPR 2005. IEEE Computer Society Conference on. IEEE, 2005, 2: 60-65.</p>
@@ -120,8 +127,10 @@ function clearText(field)
 				<p>[3] Antoni Buades, Bartomeu Coll, and Jean-Michel Morel, Non-Local Means Denoising, Image Processing On Line, 1 (2011). <a href="http://dx.doi.org/10.5201/ipol.2011.bcm_nlm" target="_blank">http://dx.doi.org/10.5201/ipol.2011.bcm_nlm</a></p>
 				<p>[4] Jacques Froment, Parameter-Free Fast Pixelwise Non-Local Means Denoising, Image Processing On Line, 4 (2014), pp. 300–326. <a href="http://dx.doi.org/10.5201/ipol.2014.120" target="_blank">http://dx.doi.org/10.5201/ipol.2014.120</a></p>
 				
+				<p><a href="http://homepages.inf.ed.ac.uk/rbf/CVonline/LOCAL_COPIES/VELDHUIZEN/node18.html" target="_blank">Measures of image quality</a></p>
+				
 				<br/>
-				<p style="text-indent:0;text-align:right">Last update: <!-- #BeginDate format:IS1 -->2014-11-13<!-- #EndDate --></p>
+				<p style="text-indent:0;text-align:right">Last update: <!-- #BeginDate format:IS1 -->2014-11-20<!-- #EndDate --></p>
 				
 				<!-- begin htmlcommentbox.com -->
 				<div id="HCB_comment_box"></div>

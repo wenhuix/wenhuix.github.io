@@ -76,11 +76,12 @@ function clearText(field)
 				<p>对于输入的带有噪声的图像<span lang="latex">v(x)</span>，其加性噪声可以用一个方程来表示：
 				$$v(x) = u(x) + \varepsilon (x),\quad x \in \Omega ,$$</p>
 				<p>其中$u(x)$是原来没有噪声的图像。$x$是像素集合，$\varepsilon (x)$是噪声带来的影响。$\Omega$是像素的集合，也就是整幅图像。从这个公式可以看出，噪声是直接叠加在原始图像上的，这个噪声可以是椒盐噪声、高斯噪声。理论上来说，如果能够精确地获得噪声，用输入图像减去噪声就可以恢复出原始图像。但现实往往很骨感，除非明确地知道噪声生成的方式，否则噪声很难单独求出来。</p>
+				<p>工程上，图像中的噪声常常用高斯噪声${\rm N}(\mu ,{\sigma ^2})$来近似表示，其中$\mu = 0$，${\sigma ^2}$是噪声的方差，${\sigma ^2}$越大，噪声越大。一个有效的去除高斯噪声的方式是图像求平均，对N幅相同的图像求平均的结果将使得高斯噪声的方差降低到原来的N分之一，现在效果比较好的去噪算法都是基于这一思想来进行算法设计。</p>
 				<div class="margin_bottom_10"></div>
 				
 				<div class="header_05">NL-Means算法</div>
 				<div class="margin_bottom_10"></div>
-				<p>NL-Means的全称是：Non-Local Means，直译过来是非局部平均，该算法不仅仅利用了像素周围的局部区域的信息，更是利用了整幅图像来进行去噪。NL-Means的滤波过程可以用下面公式来表示：
+				<p>NL-Means的全称是：Non-Local Means，直译过来是非局部平均，该算法使用图像中的冗余信息来去噪声。与常用的双线性滤波、中值滤波等利用图像局部信息来滤波不同的是，它利用了整幅图像来进行去噪，以图像块为单位在图像中寻找相似区域，再对这些区域求平均，能够比较好地去掉图像中存在的高斯噪声。NL-Means的滤波过程可以用下面公式来表示：
 						$$\tilde u(x) = \sum\limits_{y \in {\Omega _x}} {w(x,y)v(y)}.$$
 				</p>
 				<p>在这个公式中，$w(x,y)$是一个权重，表示在原始图像$v$中，像素 $x$ 和像素 $y$ 的相似度。这个权重要大于0，同时，权重的和为1，用公式表示是这样：
@@ -92,7 +93,11 @@ function clearText(field)
 				$$w(x,y) = {1 \over {n(x)}}\exp ({{\left\| {{\bf{V}}(x) - {\bf{V}}(y)} \right\|_{2,a}^2} \over {{h^2}}}).$$</p>
 				
 				<p>其中： $n(x)$ 是一个归一化的因子，是所有权重的和，对每个权重除以该因子后，使得权重满足和为1的条件。 $h>0$ 是滤波系数，控制指数函数的衰减从而改变欧氏距离的权重。 ${\bf{V}}(x)$ 和 ${\bf{V}}(y)$ 代表了像素 $x$ 和像素 $y$ 的邻域，这个邻域常称为块(Patch)邻域。块邻域一般要小于搜索区域。${\left\| {{\bf{V}}(x) - {\bf{V}}(y)} \right\|_{2,a}^2}$ 是两个邻域的高斯加权欧式距离。其中 $a>0$ 是高斯核的标准差。在求欧式距离的时候，不同位置的像素的权重是不一样的，距离块的中心越近，权重越大，距离中心越远，权重越小，权重服从高斯分布。实际计算中考虑到计算量的问题，常常采用均匀分布的权重。</p>
-				<p>讲了这么多，是时候给出图片来说明问题了：</p>
+				<p>讲了这么多，是时候用图来说明问题了：</p>
+				<div style="text-align:center">
+					<a href="images/denoise/nlmlena.jpg" data-lightbox="image-set" data-title="权重说明"><img src="images/denoise/nlmlena.jpg" height="300"/></a>
+				</div>
+				<p>如上图所示，p为去噪的点，因为q1和q2的邻域与p相似，所以权重$w(p,q1)$和$w(p,q2)$比较大，而邻域相差比较大的点q3的权重值$w(p,q3)$很小。如果用一幅图把所有点的权重表示出来，那就得到下面这些权重图：</p>
 				<div style="text-align:center">
 					<a href="images/denoise/nlm1.jpg" data-lightbox="image-set" data-title="权重分布图"><img src="images/denoise/nlm1.jpg" height="210"/></a>
 				</div>
@@ -108,11 +113,16 @@ function clearText(field)
 				
 				<div class="header_05">BM3D算法</div>
 				<div class="margin_bottom_10"></div>
+				<p>BM3D（Block-matching and 3D filtering，3维块匹配滤波）可以说是当前效果最好的算法之一。该算法的思想跟NL-Means有点类似，也是在图像中寻找相似块的方法进行滤波，但是相对于NL-Means要复杂得多，理解了NL-Means有助于理解BM3D算法。BM3D算法总共有两步：</p>
+				<div style="text-align:center">
+					<a href="images/denoise/bm3dscheme.jpg" data-lightbox="bm3d-set" data-title="BM3D算法流程图"><img src="images/denoise/bm3dscheme.jpg" width="600"/></a>
+				</div>
 				
 				
+				<br/>
 				<div class="header_05">算法比较</div>
 				<div class="margin_bottom_10"></div>
-				<p>要比较算法效果，必然离不开评价体系。由于人带有主观因素，每个人的评价可能都不一样，因此有必要用几种客观的评价方法来对结果进行评价。目前，两种用得比较多的评价方式是<strong>MSE</strong>(Mean-Squared Error，均方误差)和<strong>PSNR</strong>(Peak Signal-to-Noise Ratio，峰值信噪比)。</p>
+				<p>要比较算法效果，必然离不开评价体系。由于人带有主观因素，每个人的评价可能都不一样，因此有必要用几种客观的评价方法来对结果进行评价。目前，用得比较多的评价方式是<strong>MSE</strong>(Mean-Squared Error，均方误差)和<strong>PSNR</strong>(Peak Signal-to-Noise Ratio，峰值信噪比)。</p>
 				<p>两幅$M \times N$大小的图像$u(x,y)$和$v(x,y)$的MSE计算公式如下：$${e_{MSE}} = {1 \over {MN}}\sum\limits_{n = 1}^N {\sum\limits_{m = 1}^M {{{[u(n,m) - v(n,m)]}^2}} } .$$</p>
 				<p>在这个公式里没有表现出像素值范围对结果的影响，同样的均方误差8-bit的图像和12-bit的图像显然没有可比性。因此，又引入了峰值信噪比：$$PSNR =  - 10{\log _{10}}{{{e_{MSE}}} \over {{s^2}}}.$$ </p><p>上式中，$s$ 是图像像素最大值，对于8-bit的图像而言 $s$=255，PSNR的单位是分贝(dB)。 通常 PSNR 值越高表示品质越好，一般而言，当 PSNR&lt;30dB 时，代表以人的肉眼看起来是不能容忍的范围。因此大部分PSNR值都要&gt;30dB。但PSNR高，并不代表图像质量一定好，有时候还是必须要靠人的肉眼去辅助判断图像的质量才较为正确。</p>
 				<div style="text-align:center">
@@ -126,7 +136,9 @@ function clearText(field)
 				<p>[2] Buades A, Coll B, Morel J M. Nonlocal image and movie denoising[J]. International journal of computer vision, 2008, 76(2): 123-139.</p>
 				<p>[3] Antoni Buades, Bartomeu Coll, and Jean-Michel Morel, Non-Local Means Denoising, Image Processing On Line, 1 (2011). <a href="http://dx.doi.org/10.5201/ipol.2011.bcm_nlm" target="_blank">http://dx.doi.org/10.5201/ipol.2011.bcm_nlm</a></p>
 				<p>[4] Jacques Froment, Parameter-Free Fast Pixelwise Non-Local Means Denoising, Image Processing On Line, 4 (2014), pp. 300–326. <a href="http://dx.doi.org/10.5201/ipol.2014.120" target="_blank">http://dx.doi.org/10.5201/ipol.2014.120</a></p>
-				
+				<p>[5] Dabov K, Foi A, Katkovnik V, et al. Image denoising by sparse 3-D transform-domain collaborative filtering[J]. Image Processing, IEEE Transactions on, 2007, 16(8): 2080-2095.</p>
+				<p>[6] <a href="http://www.cs.tut.fi/~foi/GCF-BM3D/">http://www.cs.tut.fi/~foi/GCF-BM3D/</a></p>
+				<p>[7] Marc Lebrun, An Analysis and Implementation of the BM3D Image Denoising Method, Image Processing On Line, 2 (2012), pp. 175–213. <a href="http://dx.doi.org/10.5201/ipol.2012.l-bm3d">http://dx.doi.org/10.5201/ipol.2012.l-bm3d</a></p>
 				<p><a href="http://homepages.inf.ed.ac.uk/rbf/CVonline/LOCAL_COPIES/VELDHUIZEN/node18.html" target="_blank">Measures of image quality</a></p>
 				
 				<br/>

@@ -2,10 +2,25 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>安卓小车</title>
+<title>安卓蓝牙小车</title>
 <meta name="keywords" content="安卓，Android，蓝牙，Bluetooth，小车，大脚车" />
-<meta name="description" content="改造大脚车，加装蓝牙，用安卓手机通过蓝牙控制大脚车的运动。" />
+<meta name="description" content="改造大脚车，在控制器上加装蓝牙，用安卓手机通过蓝牙控制大脚车的运动。" />
 <link href="../webstyle.css" rel="stylesheet" type="text/css" />
+<!-- math -->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        TeX: {equationNumbers: {autoNumber: ["AMS"], useLabelIds: true}},
+        "HTML-CSS": {linebreaks: {automatic: true}},
+        SVG: {linebreaks: {automatic: true}},
+		tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+		displayMath: [ ["$$","$$"], ["\\[", "\\]"] ]
+    });
+</script>
+<!-- code -->
+<link rel="stylesheet" href="../highlight/styles/default.css">
+<script src="../highlight/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();hljs.configure({tabReplace: '    '});</script>
 <!-- light box -->
 <link rel="stylesheet" href="../css/lightbox.css">
 <script src="../js/jquery-1.11.0.min.js"></script>
@@ -48,44 +63,128 @@ function clearText(field)
 		
 			<div id="column_w600">
 				
-				<div class="header_02">安卓小车</div>
+				<div class="header_02">安卓蓝牙小车</div>
 				<p class="em_text">这个工程是毕业论文的一部分，主要工作是改造一辆能够被安卓手机控制的小车。通过对安卓手机编程，能够在蓝牙的通信范围内遥控小车。</p>
-				<div class="margin_bottom_10"></div>  
 				<div class="header_05">简介</div>
 				
 				<p>小时候家里玩具少，看到遥控车总是很羡慕。正好毕业设计题目自选，就想着做一个能被手机控制的安卓小车。因为实验室方向是图像处理和模式识别相关专业，有意将这个安卓小车作为一个模式识别的实验平台。安卓手机可以安装在小车上，根据手机采集的图像来进一步的实验。任何有趣的想法可以移植到手机上控制小车自动运行。</p>
 				
 				<p>总的来说，这个工程可以分为两部分：小车端和手机端。下面，将分别对这两个模块进行介绍。</p>
-				
-				<div class="margin_bottom_10"></div>  
+				 
 				<div class="header_05">小车</div>
-				<p>小车是在淘宝上买的模型，随手一搜大脚车到处都是。这个模型车自带2.4G的遥控器，遥控范围大概在100m左右。采用的是7.2V直流电机，虽然电压不高，但是性能绝对强劲，下面是小车刚买回来的样子，左边一幅图车顶加了个摄像头，右边的图拆了外壳，霸气外泄。</p>
+				<p>小车是在淘宝上买的模型，随手一搜大脚车到处都是。这个模型车自带2.4G的遥控器，遥控范围大概在100m左右。采用的是7.2V直流电机，虽然电压不高，但是性能绝对强劲，下面是小车刚买回来的样子，左边一幅图车顶加了个摄像头，右边的图拆了外壳，巨大的直流电机加散热罩霸气外泄。</p>
 				<div style="text-align:center">
 					<a href="images/androidcar/truck.jpg" data-lightbox="image-set" data-title="大脚车"><img src="images/androidcar/truck.jpg" height="150"/></a>
 					<a href="images/androidcar/image09.jpg" data-lightbox="image-set" data-title="大脚车"><img src="images/androidcar/image09.jpg" height="150"/></a>
 				</div>
-				<br/>
-				<p>拆开仔细研究之后发现小车前进后退的动力是直流电机，通过一块L298芯片驱动（图中的电调），而左右的转向是通过一个舵机控制前轮来实现。</p>
+				<div class="margin_bottom_10"></div> 
+				<div class="header_04">一、改装</div>
+				<div class="margin_bottom_10"></div> 
+				<p>拆开仔细研究之后发现小车前进后退的动力是直流电机，通过一块L298芯片驱动（图中的电调）。而左右的转向是通过一个舵机控制前轮来实现。遥控器的接收机接收到信号之后，发送PWM波到电调和舵机，通过调节PWM的占空比来控制前进和转向。我猜测遥控器接收机的三个通道输出的是同样的标准舵机控制信号，这一想法在示波器上得到了印证。</p>
 				<div style="text-align:center">
 					<a href="images/androidcar/image04.png" data-lightbox="image-set" data-title="内部图"><img src="images/androidcar/image04.png" height="160"/></a>
 					<a href="images/androidcar/image02.png" data-lightbox="image-set" data-title="连线图"><img src="images/androidcar/image02.png" height="160"/></a>
 				</div>
+				<div class="margin_bottom_10"></div> 
+				<p>针对这个特点，改造的思路是在车上加一块MCU，通过MCU来生成遥控器输出的PWM波，直接接入到电调和舵机，从而实现小车的控制。这样的改造方案无需额外的直流电机控制器，并且，可以方便地在MCU信号和遥控器接收机信号之间进行切换。</p>
+				<p>根据这一想法，在车上装了一块<a href="http://arduino.cc/en/Main/arduinoBoardNano" target="_blank">Arduino Nano</a> MCU，并且MCU连接了一块蓝牙模块，通过串口与蓝牙通信。为了对小车速度进行测量，我还给小车加装了一个光点码盘。整个加装的电路图如下所示：</p>
+				<div align="center">
+					<a href="images/androidcar/cirtuit.jpg" data-lightbox="image-set" data-title="改装电路图"><img src="images/androidcar/cirtuit.jpg" width="500"/></a>
+				</div>
+				<div class="margin_bottom_10"></div> 
+				<p>为了方便控制信号的切换，输入电源由一个双向开关控制，当拨动到左边时，遥控器接收机通电，可以通过遥控器控制小车。当拨向右边时，MCU通电，通过MCU来控制小车。最后装上MCU、开关之后的定妆照：</p>
+				<div align="center">
+					<a href="images/androidcar/image10.jpg" data-lightbox="image-set" data-title="控制信号切换开关"><img src="images/androidcar/image10.jpg" height="180"/></a>
+					<a href="images/androidcar/trunk2.jpg" data-lightbox="image-set" data-title="改装之后"><img src="images/androidcar/trunk2.jpg" height="180"/></a>
+				</div>
+				<div class="margin_bottom_10"></div> 
+				<div class="header_04">二、PWM信号</div>
+				<div class="margin_bottom_10"></div> 
+				<p>在这一步中，需要让MCU输出合格的PWM波，首先来看一下舵机的控制。</p>
+				<p>舵机，也称为伺服电机，是一个糅合了多项技术的科技结晶体，它由直流电机、减速齿轮组、传感器和控制电路组成，是一套闭环反馈自动控制装置。舵机的角度检测器是它的输入传感器，舵机转动的位置变化时位置检测器的电阻值就会跟着变化。通过控制电路读取该电阻值的大小，就能根据阻值适当调整电机的速度和方向，使电机向指定角度旋转。常用的舵机有一个三线的接口，分别是地线，5V信号线，和电源线。舵机的控制信号是PWM波，PWM波与舵机的转动关系如下图所示：</p>
+				<div align="center">
+					<a href="images/androidcar/servocontrol.jpg" data-lightbox="image-set" data-title="舵机控制"><img src="images/androidcar/servocontrol.jpg" width="450"/></a>
+				</div>
+				<div class="margin_bottom_10"></div> 
+				<p>在标准的舵机信号中，脉冲的高电平持续1到2毫秒（ms），也就是1000到2000微秒（µs） 。在1000µs时，舵机左满舵。在2000µs时，右满舵。当然也可以通过调整脉宽来实现更大或者更小范围内的运动。</p>
+				<p>对于小车的前进与后退而言，当输入PWM波的高电平持续时间为小于1500微秒时，舵机向左旋转，小车向左转弯。当输入PWM波的高电平持续时间大于1500微秒时，舵机向右旋转，小车向右转弯。在这一过程中，小车的转弯角度与舵机旋转角度成正比。当输出PWM波的高电平持续时间为1500微秒时，舵机处在正中位置，小车直走。</p>
 				
+				<p>使用Arduino MCU的优势在于，它提供了从硬件到开发环境的整套解决方案，并且包含了很多MCU使用的库，其中就舵机控制库Servo Lib。这让舵机的控制变得非常简单，需要做的只有四步：</p>
 				
-				
-				<div class="margin_bottom_10"></div>  
-				<div class="header_05">安卓客户端</div>	
+				<pre><code>
+	#include &lt;Servo.h&gt; 	 //（1）引用库文件
+	Servo driveMotor;	 //（2）声明一个伺服电机对象
+	//设置程序
+	void setup() 
+	{ 
+		...
+		angleServo.attach(9);//（3）将该伺服电机绑定到Pin9上，Pin9能够输出PWM波。
+		...
+	}
+	//主程序
+	void loop() {
+		...
+		driveMotor.writeMicroseconds(1500);//（4）输出高电平持续时间为1500us的PWM波
+		...
+	}
+				</pre></code>
+				<p>剩下的串口通信和光电编码器计数也非常简单，具体可以参考源代码。</p>
 
+				<div class="header_04">三、PID控制</div>
+				<div class="margin_bottom_10"></div> 
+				<p>在调试的过程中发现，如果不对速度进行闭环控制，给定一个速度，小车速度表现非常不稳定，尤其是当遇到障碍物时，要么过不去，要么速度过快。因此，需要对小车进行闭环反馈控制。</p>
+				<p>闭环控制系统对实际输出的量进行测量，并将实际输出与预期输出进行比较，将获得的偏差作为控制的依据，并用于实际的控制过程，以使偏差不断地减小。小车的速度闭环反馈控制回路的框图如下图所示:</p>
+				<div align="center">
+					<a href="images/androidcar/pid.jpg" data-lightbox="image-set" data-title="速度闭环反馈控制系统"><img src="images/androidcar/pid.jpg" width="450"/></a>
+				</div>
+				<div class="margin_bottom_10"></div> 
+				<p>其中的 PID 控制器可用如下方程来表示：$$u(t) = {K_p}e(t) + {K_I}\int {e(t)dt + {K_D}{{de(t)} \over {dt}}} $$</p>
+				<p>$u(t)$为控制器输出的控制量，$e(t)$为偏差，是由预期的输出响应与实际输出响应的测量值的差，上式右边是比例项、积分项与微分项之和，${K_p},{K_I},{K_D}$为相应项的系数，也称为控制增益。对上式进行离散化，并采用增量式PID控制。在最终的参数整定时，包含了积分项和微分项。小车这个系统最终整定的结果是:${K_p}$=195，${K_I}$=5，${K_D}$=1.25，阶跃响应曲线为：</p>
+								<div align="center">
+					<a href="images/androidcar/respcurve.jpg" data-lightbox="image-set" data-title="小车阶跃响应曲线"><img src="images/androidcar/respcurve.jpg" width="250"/></a>
+				</div>
+				<div class="margin_bottom_10"></div> 
+				<p>从图中可以看出，小车的上升时间为0.8s，超调量为0，响应速度很快，并且速度稳定。小车将接收到的速度作为PID的输入，控制小车按照客户端设定的速度前进。</p>
 				
+				<div class="header_05">安卓客户端</div>	
+				<div class="margin_bottom_10"></div> 
+				<p>在完成小车端的改装之后，需要编写一个安卓客户端，要能够与小车上的蓝牙模块进行通信，同时要将手在屏幕上的触摸位置变为控制命令发到小车端。</p>
+				<div class="header_04">一、软件界面</div>
+				<div class="margin_bottom_10"></div> 
+
+				<p>考虑到可能需要单手操作和双手操作，软件包含竖放和横放两个界面：</p>
+				<div align="center">
+					<a href="images/androidcar/vert.jpg" data-lightbox="image-set" data-title="单手操作"><img src="images/androidcar/vthumb.jpg" height="190"/></a>
+					<a href="images/androidcar/land.jpg" data-lightbox="image-set" data-title="双手操作"><img src="images/androidcar/lthumb.jpg" height="190"/></a>
+					<a href="images/androidcar/S41118-205327.jpg" data-lightbox="image-set" data-title="蓝牙设备选择界面"><img src="images/androidcar/S41118-205327.jpg" height="190"/></a>
+				</div>
+				<div class="margin_bottom_10"></div> 
+				<p>单手界面只有一个控制板，包含了一个实心圆和外层的空心圆。这个控制板承担了方向和速度的控制功能。无论手在实心圆的哪个方向，到实心圆距离代表速度。当手落在实心圆里面时，小车静止；当手落在空心圆外面时，小车达到最大速度。当手落在圆心左边时，小车向左转，当手落在右边时，小车向右转。偏离圆心垂线越远，转向越大。</p>
+				<p>双手界面则将方向控制和速度控制分开来，左边控制方向，右边控制速度。功能解释与单手界面一致。</p>
+				<p>界面右上角有一个蓝牙标志，点击该标志将会进行设备搜索，并列出可选蓝牙设备，点击相应的设备就能进行连接了。</p>
+				
+				<div class="header_04">二、发送命令</div>
+				<div class="margin_bottom_10"></div> 
+				<p>安卓客户端与蓝牙通信的程序是从Android SDK中的Sample改写而来，因此，在这里不做过多的介绍。在这里，蓝牙程序只有发送，而不会接收小车的消息，相对比较简单。</p>
+				<p>当连接上小车的蓝牙设备后，当手进入控制范围时，手机会新建一个线程，计算速度和方向，并每隔50毫秒将这些命令发送到手机，剩下的事情就交给手机了。</p>
+				<p>速度的计算用公式表示如下：$$speed = \sqrt {{{(x - {x_0})}^2} + {{(y - {y_0})}^2}} .$$</p>
+				<p>方向的计算公式如下：$$angle = atan 2({{y - {y_0}} \over {x - {x_0}}})$$</p>
+				<p>其中，$(x_0 ,y_0)$是实心圆的坐标，$(x,y)$是手指所在的位置的坐标。</p>
+				
+				<div class="margin_bottom_10"></div> 
+				<div class="margin_bottom_10"></div> 
 				<div class="header_05">代码</div>
-				<p class="em_text">请访问：<a href="https://github.com/wenhuix/BluetoothCar">https://github.com/wenhuix/BluetoothCar</a></p>
+				<p class="em_text">源代码请访问：<a href="https://github.com/wenhuix/BluetoothCar">https://github.com/wenhuix/BluetoothCar</a></p>
+				
+				<p>客户端APK下载：<a href="download/BtCarActivity.apk"><img src="images/androidcar/ic_launcher-web.png" height="20"/></a></p>
 				
 				<div class="header_05">参考资料</div>
 				
-				<p><a href="http://fritzing.org/home/" target="_blank">http://fritzing.org/home/</a></p>
-				
+				<p>[1] Arduino官方网站，<a href="http://arduino.cc/" target="_blank">http://arduino.cc/</a></p>
+				<p>[2] 电路图使用Fritzing软件绘制：<a href="http://fritzing.org/home/" target="_blank">http://fritzing.org/home/</a></p>
+				<p>[3] <a href="http://developer.android.com/index.html" target="_blank">http://developer.android.com/index.html</a></p>
 				<br/>
-				<p style="text-indent:0;text-align:right">Last update: <!-- #BeginDate format:IS1 -->2012-10-13<!-- #EndDate --></p>
+				<p style="text-indent:0;text-align:right">Last update: <!-- #BeginDate format:IS1 -->2014-11-22<!-- #EndDate --></p>
 				
 				<!-- begin htmlcommentbox.com -->			
 				<div id="HCB_comment_box"></div>

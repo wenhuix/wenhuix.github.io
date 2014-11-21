@@ -1,6 +1,7 @@
 ﻿document.write("<div id=\"column_w260\">");
 document.write("<div class=\"header_03\">文章列表<\/div>");
 	document.write("<div class=\"column_w300_section_01\">");
+		document.write("<p\">2014-10-21 <a href=\"http://wenhuix.github.io\/project\/androidcar.html\">安卓蓝牙小车<\/a><\/p>");
 		document.write("<p\">2014-10-21 <a href=\"http://wenhuix.github.io\/project\/comdbg.html\">串口调试助手<\/a><\/p>");
 		document.write("<p\">2014-03-16 <a href=\"http://wenhuix.github.io\/project\/xunfeivoice.html\">快递员助手<\/a><\/p>");
 		document.write("<p\">2013-09-20 <a href=\"http://wenhuix.github.io\/project\/poker.html\">扑克牌识别<\/a><\/p>");

@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>图像复原算法基础</title>
+<meta name="keywords" content="图像处理，图像复原，维纳滤波，逆滤波，小波变换，盲反卷积" />
+<meta name="description" content="图像复原中用到的逆滤波、维纳滤波、小波变换、盲反卷积等算法" />
+<link rel="stylesheet" href="../webstyle.css" type="text/css" />
+<!-- math -->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        TeX: {equationNumbers: {autoNumber: ["AMS"], useLabelIds: true}},
+        "HTML-CSS": {linebreaks: {automatic: true}},
+        SVG: {linebreaks: {automatic: true}},
+		tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+		displayMath: [ ["$$","$$"], ["\\[", "\\]"] ]
+    });
+</script>
+<!-- light box -->
+<link rel="stylesheet" href="../css/lightbox.css">
+<script src="../js/jquery-1.11.0.min.js"></script>
+<script src="../js/lightbox.js"></script>
+<!-- customize labels of htmlcommentbox.com -->
+<script src="../js/comment.js"></script>
+<script language="javascript" type="text/javascript">
+function clearText(field)
+{
+    if (field.defaultValue == field.value) field.value = '';
+    else if (field.value == '') field.value = field.defaultValue;
+}
+</script>
+</head>
+<body>
+<div id="container">
+	<div id="header_wrapper">
+	<!--  Free Web Templates by TemplateMo.com  -->
+	  <div id="header">
+		
+		<div id="site_logo"></div>
+			
+			<div id="menu">
+				<div id="menu_left"></div>
+				<ul>
+					  <li><a href="../index.html">首页</a></li>
+					  <li><a href="../projects.html">工程</a></li>
+					  <li><a href="../research.html" class="current">研究</a></li>
+					  <li><a href="../blog.html">博客</a></li>
+					  <li><a href="../about.html" class="last">关于我</a></li>
+				</ul>    	
+			</div> <!-- end of menu -->
+		
+		</div>  <!-- end of header -->
+	</div> <!-- end of header wrapper -->
+
+	<div id="content_wrapper">
+		<div id="content">
+		
+			<div id="column_w600">
+				
+				<div class="header_02">图像复原算法基础</div>
+				
+				<p class="em_text">与图像增强类似，图像复原的最终目的是改善给定的图像，尽管图像增强和复原有交叉的邻域，但图像增强主要是一个主观的过程，而图像复原则是一个客观的过程。图像复原一般是基于某种先验的退化模型，对退化后的图像进行逆向操作，从而复原出原图像。</p>
+
+				<div class="margin_bottom_10"></div>
+				<div class="header_05">退化和复原模型</div>
+				<div class="margin_bottom_10"></div>
+				
+				<p>在进一步讨论图像复原之前，先来看一下图像退化模型，对于一幅二维图像来说，空间域的退化图像可以用这个方程表示：$$g(x,y) = h(x,y) * f(x,y) + \eta (x,y).$$</p>
+				<p>其中$g(x,y)$为退化后的图像，$f(x,y)$为输入的原图像，$h(x,y)$是退化函数的空间描述，$*$代表空间卷积。将空间域的卷积变换到频率域的乘积，可以把上式的模型写成等价的频率域下的描述，大写字母表示上式中相应项的傅里叶变换：$$G(u,v) = H(u,v)F(u,v) + N(u,v)$$</p>
+				<p>可以用一幅图来表示图像退化/复原这一过程：</p>
+				<div style="text-align:center">
+					<a href="images/imrestore/model.jpg" data-lightbox="image-set" data-title="图像退化/复原过程模型"><img src="images/imrestore/model.jpg" width="500"/></a>
+				</div>
+				<p>复原的过程就是图像退化的逆过程，我们希望最终估计的结果$\hat f(x,y)$尽可能接近原始图像$f(x,y)$。获得 $H$ 和 $\eta$的信息越多，两者就越接近。</p>
+				
+				
+				
+				<br/>
+				<div class="header_05">参考文献</div>
+				<div class="margin_bottom_10"></div>
+				<p>[1] Gonzalez R C, Woods R E. 冈萨雷斯数字图像处理[J]. 2003.</p>
+				<p>[2] <a href="http://www.owlnet.rice.edu/~elec539/Projects99/BACH/proj2/intro.html" target="_blank">http://www.owlnet.rice.edu/~elec539/Projects99/BACH/proj2/intro.html</a></p>
+				<p>[3] <a href="http://homepages.inf.ed.ac.uk/rbf/CVonline/LOCAL_COPIES/VELDHUIZEN/node15.html" target="_blank">http://homepages.inf.ed.ac.uk/rbf/CVonline/LOCAL_COPIES/VELDHUIZEN/node15.html</a></p>
+				
+				<br/>
+				<p style="text-indent:0;text-align:right">Last update: <!-- #BeginDate format:IS1 -->2014-11-20<!-- #EndDate --></p>
+				
+				<!-- begin htmlcommentbox.com -->
+				<div id="HCB_comment_box"></div>
+				<script type="text/javascript" id="hcb"> /*<!--*/ if(!window.hcb_user){hcb_user={};} (function(){var s=document.createElement("script"), l=(hcb_user.PAGE || ""+window.location), h="//www.htmlcommentbox.com";s.setAttribute("type","text/javascript");s.setAttribute("src", h+"/jread?page="+encodeURIComponent(l).replace("+","%2B")+"&mod=%241%24wq1rdBcg%24whFr%2FAI4JbJajD84P9cq7%2F"+"&opts=16862&num=10");if (typeof s!="undefined") document.getElementsByTagName("head")[0].appendChild(s);})(); /*-->*/ </script>
+				<!-- end htmlcommentbox.com -->
+				
+				<div class="cleaner"></div>
+			</div>
+			
+			<!--文章列表-->
+			<script src="../js/researchlist.js"></script>
+		
+			<div class="cleaner"></div>
+		</div> <!-- end of content -->
+	</div> <!-- end of content wrapper -->
+</div> <!-- end of container -->
+
+<div id="footer_wrapper">
+
+	<div id="footer">
+    	<script src="../js/footer.js"></script>
+        <div class="cleaner"></div>
+    </div> <!-- end of footer -->
+    <!--  Free CSS Templates by TemplateMo.com  -->
+</div> <!-- end of footer -->
+        
+    </body>
+</html>

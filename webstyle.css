@@ -141,6 +141,29 @@ img {
 	background: url(images/header_01_bg.jpg) left bottom no-repeat;	
 }
 
+table.gridtable {
+	text-align:center;
+	font-size:13px;
+	color:#333333;
+	border-width: 1px;
+	border-color: #666666;
+	border-collapse: collapse;
+}
+table.gridtable th {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #dedede;
+}
+table.gridtable td {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #ffffff;
+}
+
 #container {
 	min-height: 100%;
 	height: auto !important;

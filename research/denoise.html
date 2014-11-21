@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>图像去噪</title>
+<title>图像去噪算法</title>
 <meta name="keywords" content="图像处理，图像去噪，噪声抑制，高斯噪声" />
 <meta name="description" content="本文讨论几种效果比较好的图像去噪算法。包括Non-Local Means、BM3D等。" />
 <link rel="stylesheet" href="../webstyle.css" type="text/css" />
@@ -66,7 +66,7 @@ function clearText(field)
 					所有的工程问题最后都是最优化问题。 
 				</div>
 				<br />
-				<p>好了，废话不多说，来看看最新的去噪算法吧。</p>
+				<p>好了，废话不多说，来看看效果比较好的去噪算法吧。</p>
 				<div class="margin_bottom_10"></div>
 				<div class="header_05">噪声模型</div>
 				<div class="margin_bottom_10"></div>
@@ -74,14 +74,14 @@ function clearText(field)
 				<p>图像中噪声的来源有许多种，这些噪声来源于图像采集、传输、压缩等各个方面。噪声的种类也各不相同，比如椒盐噪声，高斯噪声等，针对不同的噪声有不同的处理算法。</p>
 				
 				<p>对于输入的带有噪声的图像<span lang="latex">v(x)</span>，其加性噪声可以用一个方程来表示：
-				$$v(x) = u(x) + \varepsilon (x),\quad x \in \Omega ,$$</p>
-				<p>其中$u(x)$是原来没有噪声的图像。$x$是像素集合，$\varepsilon (x)$是噪声带来的影响。$\Omega$是像素的集合，也就是整幅图像。从这个公式可以看出，噪声是直接叠加在原始图像上的，这个噪声可以是椒盐噪声、高斯噪声。理论上来说，如果能够精确地获得噪声，用输入图像减去噪声就可以恢复出原始图像。但现实往往很骨感，除非明确地知道噪声生成的方式，否则噪声很难单独求出来。</p>
+				$$v(x) = u(x) + \eta (x),\quad x \in \Omega ,$$</p>
+				<p>其中$u(x)$是原来没有噪声的图像。$x$是像素集合，$\eta (x)$是加项噪声项，代表噪声带来的影响。$\Omega$是像素的集合，也就是整幅图像。从这个公式可以看出，噪声是直接叠加在原始图像上的，这个噪声可以是椒盐噪声、高斯噪声。理论上来说，如果能够精确地获得噪声，用输入图像减去噪声就可以恢复出原始图像。但现实往往很骨感，除非明确地知道噪声生成的方式，否则噪声很难单独求出来。</p>
 				<p>工程上，图像中的噪声常常用高斯噪声${\rm N}(\mu ,{\sigma ^2})$来近似表示，其中$\mu = 0$，${\sigma ^2}$是噪声的方差，${\sigma ^2}$越大，噪声越大。一个有效的去除高斯噪声的方式是图像求平均，对N幅相同的图像求平均的结果将使得高斯噪声的方差降低到原来的N分之一，现在效果比较好的去噪算法都是基于这一思想来进行算法设计。</p>
 				<div class="margin_bottom_10"></div>
 				
 				<div class="header_05">NL-Means算法</div>
 				<div class="margin_bottom_10"></div>
-				<p>NL-Means的全称是：Non-Local Means，直译过来是非局部平均，该算法使用图像中的冗余信息来去噪声。与常用的双线性滤波、中值滤波等利用图像局部信息来滤波不同的是，它利用了整幅图像来进行去噪，以图像块为单位在图像中寻找相似区域，再对这些区域求平均，能够比较好地去掉图像中存在的高斯噪声。NL-Means的滤波过程可以用下面公式来表示：
+				<p>NL-Means的全称是：Non-Local Means，直译过来是非局部平均，在2005年由Baudes提出，该算法使用自然图像中普遍存在的冗余信息来去噪声。与常用的双线性滤波、中值滤波等利用图像局部信息来滤波不同的是，它利用了整幅图像来进行去噪，以图像块为单位在图像中寻找相似区域，再对这些区域求平均，能够比较好地去掉图像中存在的高斯噪声。NL-Means的滤波过程可以用下面公式来表示：
 						$$\tilde u(x) = \sum\limits_{y \in {\Omega _x}} {w(x,y)v(y)}.$$
 				</p>
 				<p>在这个公式中，$w(x,y)$是一个权重，表示在原始图像$v$中，像素 $x$ 和像素 $y$ 的相似度。这个权重要大于0，同时，权重的和为1，用公式表示是这样：
@@ -95,7 +95,7 @@ function clearText(field)
 				<p>其中： $n(x)$ 是一个归一化的因子，是所有权重的和，对每个权重除以该因子后，使得权重满足和为1的条件。 $h>0$ 是滤波系数，控制指数函数的衰减从而改变欧氏距离的权重。 ${\bf{V}}(x)$ 和 ${\bf{V}}(y)$ 代表了像素 $x$ 和像素 $y$ 的邻域，这个邻域常称为块(Patch)邻域。块邻域一般要小于搜索区域。${\left\| {{\bf{V}}(x) - {\bf{V}}(y)} \right\|_{2,a}^2}$ 是两个邻域的高斯加权欧式距离。其中 $a>0$ 是高斯核的标准差。在求欧式距离的时候，不同位置的像素的权重是不一样的，距离块的中心越近，权重越大，距离中心越远，权重越小，权重服从高斯分布。实际计算中考虑到计算量的问题，常常采用均匀分布的权重。</p>
 				<p>讲了这么多，是时候用图来说明问题了：</p>
 				<div style="text-align:center">
-					<a href="images/denoise/nlmlena.jpg" data-lightbox="image-set" data-title="权重说明"><img src="images/denoise/nlmlena.jpg" height="300"/></a>
+					<a href="images/denoise/nlmlena.jpg" data-lightbox="image-set" data-title="权重说明"><img src="images/denoise/nlmlena.jpg" height="250"/></a>
 				</div>
 				<p>如上图所示，p为去噪的点，因为q1和q2的邻域与p相似，所以权重$w(p,q1)$和$w(p,q2)$比较大，而邻域相差比较大的点q3的权重值$w(p,q3)$很小。如果用一幅图把所有点的权重表示出来，那就得到下面这些权重图：</p>
 				<div style="text-align:center">
@@ -103,32 +103,86 @@ function clearText(field)
 				</div>
 				<p>这6组图像中，左边是原图，中心的白色色块代表了像素 $x$ 块邻域，右边是计算出来的权重 $w(x,y)$ 图，权重范围从0（黑色）到1（白色）。这个块邻域在整幅图像中移动，计算图像中其他区域跟这个块的相似度，相似度越高，得到的权重越大。最后将这些相似的像素值根据归一化之后的权重加权求和，得到的就是去噪之后的图像了。</p>
 				<p>这个算法参数的选择也有讲究，一般而言，考虑到算法复杂度，搜索区域大概取21x21，相似度比较的块的可以取7x7。实际中，常常需要根据噪声来选取合适的参数。当高斯噪声的标准差 $\sigma$ 越大时，为了使算法鲁棒性更好，需要增大块区域，块区域增加同样也需要增加搜索区域。同时，滤波系数 $h$ 与 $\sigma$ 正相关：$h=k\sigma $，当块变大时，$k$ 需要适当减小。</p>
+				<p>NL-Means算法的复杂度跟图像的大小、颜色通道数、相似块的大小和搜索框的大小密切相关，设图像的大小为N$\times$N，颜色通道数为$N_c$，块的大小为k$\times$k，搜索框的大小为n$\times$n，那么算法复杂度为：$O({N^2}{N_c}{k^2}{n^2})$。对512$\times$512的彩色图像而言，设置k=7，n=21，OpenCV在使用了多线程的情况下，处理一幅图像所需要的时间需要几十秒。虽然有人不断基于这个算法进行改进、提速，但离实时处理还是比较远。</p>
 				<p>最后来看一下这个算法的去噪效果[3]：</p>
 				<div style="text-align:center">
 					<a href="images/denoise/cinput.jpg" data-lightbox="nlm-set" data-title="原始图像"><img src="images/denoise/cinput.jpg" height="180"/></a>
 					<a href="images/denoise/cnoisy.jpg" data-lightbox="nlm-set" data-title="加入方差15的高斯噪声"><img src="images/denoise/cnoisy.jpg" height="180"/></a>
-					<a href="images/denoise/coutput.jpg" data-lightbox="nlm-set" data-title="结果图"><img src="images/denoise/coutput.jpg" height="180"/></a>
+					<a href="images/denoise/coutput.jpg" data-lightbox="nlm-set" data-title="NL-Means结果"><img src="images/denoise/coutput.jpg" height="180"/></a>
 				</div>
 				<br/>
 				
 				<div class="header_05">BM3D算法</div>
 				<div class="margin_bottom_10"></div>
-				<p>BM3D（Block-matching and 3D filtering，3维块匹配滤波）可以说是当前效果最好的算法之一。该算法的思想跟NL-Means有点类似，也是在图像中寻找相似块的方法进行滤波，但是相对于NL-Means要复杂得多，理解了NL-Means有助于理解BM3D算法。BM3D算法总共有两步：</p>
+				<p>BM3D（Block-matching and 3D filtering，3维块匹配滤波）可以说是当前效果最好的算法之一。该算法的思想跟NL-Means有点类似，也是在图像中寻找相似块的方法进行滤波，但是相对于NL-Means要复杂得多，理解了NL-Means有助于理解BM3D算法。BM3D算法总共有两大步骤，分为基础估计（Step1）和最终估计（Step2）：</p>
 				<div style="text-align:center">
 					<a href="images/denoise/bm3dscheme.jpg" data-lightbox="bm3d-set" data-title="BM3D算法流程图"><img src="images/denoise/bm3dscheme.jpg" width="600"/></a>
+					<p style="text-indent:0em">BM3D算法流程图</p>
 				</div>
-				
-				
+				<p>在这两大步中，分别又有三小步：相似块分组（Grouping），协同滤波（Collaborative Filtering）和聚合（Aggregation）。上面的算法流程图已经比较好地将这一过程表示出来了，只需要稍加解释。</p>
+
+				<div class="header_04">Stpe1：基础估计</div>
+				<p>(1) Grouping：有了NL-Means的基础，寻找相似块的过程很容易理解。首先在噪声图像中选择一些$k \times k$ 大小的参照块（考虑到算法复杂度，不用每个像素点都选参照块，通常隔3个像素为一个不长选取，复杂度降到1/9），在参照块的周围适当大小（$n \times n$）的区域内进行搜索，寻找若干个差异度最小的块，并把这些块整合成一个3维的矩阵，整合的顺序对结果影响不大。同时，参照块自身也要整合进3维矩阵，且差异度为0。寻找相似块这一过程可以用一个公式来表示：$$G(P) = \{ Q:d(P,Q) \le {\tau ^{step1}}\} .$$</p>
+				<p>d(P,Q)代表两个块之间的欧式距离。最终整合相似块获得的矩阵就是流程图Step1中左下角的蓝色R矩阵。</p>
+				<div style="text-align:center">
+					<a href="images/denoise/patch.jpg" data-lightbox="bm3d-set" ><img src="images/denoise/patch.jpg" width="200"/></a>
+				</div>
 				<br/>
+				<p>(2) Collaborative Filtering：形成若干个三维的矩阵之后，首先将每个三维矩阵中的二维的块（即噪声图中的某个块）进行二维变换，可采用小波变换或DCT变换等，通常采用小波BIOR1.5。二维变换结束后，在矩阵的第三个维度进行一维变换，通常为阿达马变换（Hadamard Transform）。变换完成后对三维矩阵进行硬阈值处理，将小于阈值的系数置0，然后通过在第三维的一维反变换和二维反变换得到处理后的图像块。这一过程同样可以用一个公式来表达：$$Q(P) = T_{3Dhard}^{ - 1}(\gamma (T_{3Dhard}(Q(P)))).$$</p>
+				<p>在这个公式中，二维变换和一维变换用一个$T_{3Dhard}$ 来表示。$\gamma$是一个阈值操作：$$\gamma (x) = \left\{ {\matrix{
+					{0\quad if{\kern 1pt} \left| x \right| \le {\lambda _{3D}}\sigma }  \cr 
+					{x\quad \quad \; otherwise}  \cr } } \right. .$$</p>
+				<p>$\sigma$是噪声的标准差，代表噪声的强度。</p>
+				<p>(3) Aggregation：此时，每个二维块都是对去噪图像的估计。这一步分别将这些块融合到原来的位置，每个像素的灰度值通过每个对应位置的块的值加权平均，权重取决于置0的个数和噪声强度。</p>
+				
+				<div class="header_04">Step2：最终估计</div>
+				<p>(1) Grouping：第二步中的聚合过程与第一步类似，不同的是，这次将会得到两个三维数组：噪声图形成的三维矩阵${Q^{basic}}(P)$和基础估计结果的三维矩阵$Q(P)$。</p>
+
+				<p>(2) Collaborative Filtering：两个三维矩阵都进行二维和一维变换，这里的二维变换通常采用DCT变换以得到更好的效果。用维纳滤波（Wiener Filtering）将噪声图形成的三维矩阵进行系数放缩，该系数通过基础估计的三维矩阵的值以及噪声强度得出。这一过程同样可以用一个公式来表达：$$Q(P) = T_{3Dwein}^{ - 1}(w_p \cdot {T_{3Dwein}}(Q(P))).$$</p>
+				<p>在这个公式中，二维变换和一维变换用一个$T_{3Dwein}$ 来表示。$w_p$是一个维纳滤波的系数：$${w_p}(\xi ) = {{{{\left| {\tau _{3D}^{wien}({Q^{basic}}(P))(\xi )} \right|}^2}} \over {{{\left| {\tau _{3D}^{wien}({Q^{basic}}(P))(\xi )} \right|}^2} + {\sigma ^2}}}$$</p>
+				<p>$\sigma$是噪声的标准差，代表噪声的强度。</p>
+				<p>(3) Aggregation：与第一步中一样，这里也是将这些块融合到原来的位置，只是此时加权的权重取决于维纳滤波的系数和噪声强度。</p>
+				
+				<p>经过最终估计之后，BM3D算法已经将原图的噪声显著地去除。可以来看一组结果：</p>
+				<div style="text-align:center">
+					<a href="images/denoise/cinput.jpg" data-lightbox="nlm-set" data-title="原始图像"><img src="images/denoise/cinput.jpg" height="180"/></a>
+					<a href="images/denoise/cnoisy.jpg" data-lightbox="nlm-set" data-title="加入方差15的高斯噪声"><img src="images/denoise/cnoisy.jpg" height="180"/></a>
+					<a href="images/denoise/denoised_bm3d.jpg" data-lightbox="nlm-set" data-title="BM3D结果"><img src="images/denoise/denoised_bm3d.jpg" height="180"/></a>
+				</div>
+				<br/>
+				<p>该算法的主要运算量还是在相似块的搜索与匹配上，在与NL-Means同样大小的相似块和搜索区域的情况下，BM3D的算法复杂度是要高于NL-Means的，应该大概在NL-Means的3倍左右。梦想着实时处理的同学可以死心了。<p/>
+				
 				<div class="header_05">算法比较</div>
 				<div class="margin_bottom_10"></div>
 				<p>要比较算法效果，必然离不开评价体系。由于人带有主观因素，每个人的评价可能都不一样，因此有必要用几种客观的评价方法来对结果进行评价。目前，用得比较多的评价方式是<strong>MSE</strong>(Mean-Squared Error，均方误差)和<strong>PSNR</strong>(Peak Signal-to-Noise Ratio，峰值信噪比)。</p>
 				<p>两幅$M \times N$大小的图像$u(x,y)$和$v(x,y)$的MSE计算公式如下：$${e_{MSE}} = {1 \over {MN}}\sum\limits_{n = 1}^N {\sum\limits_{m = 1}^M {{{[u(n,m) - v(n,m)]}^2}} } .$$</p>
 				<p>在这个公式里没有表现出像素值范围对结果的影响，同样的均方误差8-bit的图像和12-bit的图像显然没有可比性。因此，又引入了峰值信噪比：$$PSNR =  - 10{\log _{10}}{{{e_{MSE}}} \over {{s^2}}}.$$ </p><p>上式中，$s$ 是图像像素最大值，对于8-bit的图像而言 $s$=255，PSNR的单位是分贝(dB)。 通常 PSNR 值越高表示品质越好，一般而言，当 PSNR&lt;30dB 时，代表以人的肉眼看起来是不能容忍的范围。因此大部分PSNR值都要&gt;30dB。但PSNR高，并不代表图像质量一定好，有时候还是必须要靠人的肉眼去辅助判断图像的质量才较为正确。</p>
-				<div style="text-align:center">
+
+				<div align="center">
 					<a href="images/denoise/psnr.gif" data-lightbox="psnr-set" data-title="PSNR"><img src="images/denoise/psnr.gif" width="550"/></a>
+					<p style="text-indent:0em">不同PSNR对应的视觉效果</p>
 				</div>
+				<p>我对上面两种方法获得的结果针对原图计算了PSNR，结果如下：</p>
+				<center>
+				<table class="gridtable" style="width: 70%;">
+				<caption>两个算法的PSNR比较</caption>
+					<tr>
+						<td></td>
+						<td>NL-Means</td>						
+						<td>BM3D</td>
+					</tr>
+					<tr>
+						<td>PSNR</td>
+						<td>32.0913</td>
+						<td>33.6711</td>
+					</tr>
+				</table></center>
+				</br>
+				<p>NL-Means和BM3D可以说是目前效果最好的去噪算法，其中BM3D甚至宣称它可以得到迄今为止最高的PSNR。从最终的结果也可以看出来，BM3D的效果确实要好于NL-Means，噪声更少，能够更好地恢复出图像的细节。在效果这一点上BM3D胜。无愧于State-of-the-art这一称号。当然，这里进行测试的样本比较少，可能还不足以完全说明问题。</p>
 				
+				<div class="header_05">最后说几句</div>
+				<div class="margin_bottom_10"></div>
+				<p>这两者可以说是最有效的去噪算法了，但是都不可避免地要面对一个同问题：尽管计算机性能已经成百上千倍地提高，还是远不能满足很多算法的实时计算的需求，这很大程度上限制了这些算法的使用度：算法效果很好，但是用户无法处理一张照片需要等待长达几分钟的时间。我们只能期待，要是有一天计算机性能不再是问题，又或者，大牛们能够研究出又快又好的算法吧。</p>
 				<br/>
 				<div class="header_05">参考文献</div>
 				<div class="margin_bottom_10"></div>
@@ -139,10 +193,10 @@ function clearText(field)
 				<p>[5] Dabov K, Foi A, Katkovnik V, et al. Image denoising by sparse 3-D transform-domain collaborative filtering[J]. Image Processing, IEEE Transactions on, 2007, 16(8): 2080-2095.</p>
 				<p>[6] <a href="http://www.cs.tut.fi/~foi/GCF-BM3D/">http://www.cs.tut.fi/~foi/GCF-BM3D/</a></p>
 				<p>[7] Marc Lebrun, An Analysis and Implementation of the BM3D Image Denoising Method, Image Processing On Line, 2 (2012), pp. 175–213. <a href="http://dx.doi.org/10.5201/ipol.2012.l-bm3d">http://dx.doi.org/10.5201/ipol.2012.l-bm3d</a></p>
-				<p><a href="http://homepages.inf.ed.ac.uk/rbf/CVonline/LOCAL_COPIES/VELDHUIZEN/node18.html" target="_blank">Measures of image quality</a></p>
+				<p>[8] <a href="http://homepages.inf.ed.ac.uk/rbf/CVonline/LOCAL_COPIES/VELDHUIZEN/node18.html" target="_blank">Measures of image quality</a></p>
 				
 				<br/>
-				<p style="text-indent:0;text-align:right">Last update: <!-- #BeginDate format:IS1 -->2014-11-20<!-- #EndDate --></p>
+				<p style="text-indent:0;text-align:right">Last update: <!-- #BeginDate format:IS1 -->2014-11-21<!-- #EndDate --></p>
 				
 				<!-- begin htmlcommentbox.com -->
 				<div id="HCB_comment_box"></div>

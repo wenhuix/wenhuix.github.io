@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>线性离散图像变换</title>
+<meta name="keywords" content="傅里叶变换，小波变换，阿达马变换" />
+<meta name="description" content="线性离散图像变换" />
+<link rel="stylesheet" href="../webstyle.css" type="text/css" />
+<!-- math -->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        TeX: {equationNumbers: {autoNumber: ["AMS"], useLabelIds: true}},
+        "HTML-CSS": {linebreaks: {automatic: true}},
+        SVG: {linebreaks: {automatic: true}},
+		tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+		displayMath: [ ["$$","$$"], ["\\[", "\\]"] ]
+    });
+</script>
+<!-- light box -->
+<link rel="stylesheet" href="../css/lightbox.css">
+<script src="../js/jquery-1.11.0.min.js"></script>
+<script src="../js/lightbox.js"></script>
+<!-- customize labels of htmlcommentbox.com -->
+<script src="../js/comment.js"></script>
+<script language="javascript" type="text/javascript">
+function clearText(field)
+{
+    if (field.defaultValue == field.value) field.value = '';
+    else if (field.value == '') field.value = field.defaultValue;
+}
+</script>
+</head>
+<body>
+<div id="container">
+	<div id="header_wrapper">
+	<!--  Free Web Templates by TemplateMo.com  -->
+	  <div id="header">
+		
+		<div id="site_logo"></div>
+			
+			<div id="menu">
+				<div id="menu_left"></div>
+				<ul>
+					  <li><a href="../index.html">首页</a></li>
+					  <li><a href="../projects.html">工程</a></li>
+					  <li><a href="../research.html" class="current">研究</a></li>
+					  <li><a href="../blog.html">博客</a></li>
+					  <li><a href="../about.html" class="last">关于我</a></li>
+				</ul>    	
+			</div> <!-- end of menu -->
+		
+		</div>  <!-- end of header -->
+	</div> <!-- end of header wrapper -->
+
+	<div id="content_wrapper">
+		<div id="content">
+		
+			<div id="column_w600">
+				
+				<div class="header_02">线性离散图像变换</div>
+				
+				<p class="em_text"></p>
+
+				<div class="margin_bottom_10"></div>
+				<div class="header_05">阿达马变换</div>
+				<div class="margin_bottom_10"></div>
+				
+				<p>阿达马变换（Hadamard transform），或称沃尔什-阿达玛转换，是一种广义傅立叶变换。阿达马变换矩阵${H_m}$是一个${2^m} \times {2^m}$的矩阵，给定${H_0} = 1$，那么该矩阵的更高阶可以通过递推公式推导出来：
+				$${H_m} = {1 \over {\sqrt 2 }}\left( {\matrix{ {{H_{m - 1}}} & {{H_{m - 1}}}  \cr 
+					{{H_{m - 1}}} & { - {H_{m - 1}}}  \cr  } } \right) = {H_1} \otimes {H_{m - 1}}$$</p>
+				<p>按照上面的递推公式，可以知道$2 \times 2$的阿达马变换矩阵为：$${H_1} ={1 \over {\sqrt 2 }}\left( {\matrix{	1 & 1  \cr 1 & { - 1}  \cr } } \right)$$</p>
+
+				<div class="margin_bottom_10"></div>
+				<div class="header_05">离散余弦变换</div>
+				<div class="margin_bottom_10"></div>				
+				<p>离散余弦变换（Discrete cosine transform，DCT）是与傅里叶变换相关的一种变换，类似于离散傅里叶变换，但是只使用实数。离散余弦变换的第二种类型经常被用于信号处理中，比如对信号进行有损数据压缩。这是由于离散余弦变换具有很强的“能量集中”特性，大多数的自然信号的能量都集中在离散余弦变换后的低频部分。图像也是信号的一种，在JPEG图像压缩中就应用到了DCT。</p>
+				
+				<div class="margin_bottom_10"></div>
+				<div class="header_05">离散正弦变换</div>
+				<div class="margin_bottom_10"></div>
+				
+				<div class="margin_bottom_10"></div>
+				<div class="header_05">离散小波变换</div>
+				<div class="margin_bottom_10"></div>
+				
+				
+				<br/>
+				<div class="header_05">参考文献</div>
+				<div class="margin_bottom_10"></div>
+				<p>[1] Gonzalez R C, Woods R E. 冈萨雷斯数字图像处理[J]. 2003.</p>
+				<p>[2] <a href="http://user.engineering.uiowa.edu/~dip/lecture/LinTransforms.html" target="_blank">http://user.engineering.uiowa.edu/~dip/lecture/LinTransforms.html</a></p>
+				<p>[3] <a href="http://en.wikipedia.org/wiki/Hadamard_transform" target="_blank">http://en.wikipedia.org/wiki/Hadamard_transform</a></p>
+				
+				<br/>
+				<p style="text-indent:0;text-align:right">Last update: <!-- #BeginDate format:IS1 -->2014-11-20<!-- #EndDate --></p>
+				
+				<!-- begin htmlcommentbox.com -->
+				<div id="HCB_comment_box"></div>
+				<script type="text/javascript" id="hcb"> /*<!--*/ if(!window.hcb_user){hcb_user={};} (function(){var s=document.createElement("script"), l=(hcb_user.PAGE || ""+window.location), h="//www.htmlcommentbox.com";s.setAttribute("type","text/javascript");s.setAttribute("src", h+"/jread?page="+encodeURIComponent(l).replace("+","%2B")+"&mod=%241%24wq1rdBcg%24whFr%2FAI4JbJajD84P9cq7%2F"+"&opts=16862&num=10");if (typeof s!="undefined") document.getElementsByTagName("head")[0].appendChild(s);})(); /*-->*/ </script>
+				<!-- end htmlcommentbox.com -->
+				
+				<div class="cleaner"></div>
+			</div>
+			
+			<!--文章列表-->
+			<script src="../js/researchlist.js"></script>
+		
+			<div class="cleaner"></div>
+		</div> <!-- end of content -->
+	</div> <!-- end of content wrapper -->
+</div> <!-- end of container -->
+
+<div id="footer_wrapper">
+
+	<div id="footer">
+    	<script src="../js/footer.js"></script>
+        <div class="cleaner"></div>
+    </div> <!-- end of footer -->
+    <!--  Free CSS Templates by TemplateMo.com  -->
+</div> <!-- end of footer -->
+        
+    </body>
+</html>

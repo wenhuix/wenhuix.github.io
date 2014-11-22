@@ -14,7 +14,7 @@ body {
 }
 
 a:visited {color: #CC6688; text-decoration: none;}
-a:link	  {color: #0000FF; text-decoration: none; font-weight: normal;} 
+a:link	  {color: #000; text-decoration: none; font-weight: normal;} 
 a:active, a:hover {text-decoration: underline;}
 
 p {

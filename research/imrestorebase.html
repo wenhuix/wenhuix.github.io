@@ -10,7 +10,7 @@
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
-        TeX: {equationNumbers: {autoNumber: ["AMS"], useLabelIds: true}},
+        TeX: { equationNumbers: {autoNumber: "all"} },
         "HTML-CSS": {linebreaks: {automatic: true}},
         SVG: {linebreaks: {automatic: true}},
 		tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
@@ -72,16 +72,74 @@ function clearText(field)
 				<div style="text-align:center">
 					<a href="images/imrestore/model.jpg" data-lightbox="image-set" data-title="图像退化/复原过程模型"><img src="images/imrestore/model.jpg" width="500"/></a>
 				</div>
-				<p>复原的过程就是图像退化的逆过程，我们希望最终估计的结果$\hat f(x,y)$尽可能接近原始图像$f(x,y)$。获得 $H$ 和 $\eta$的信息越多，两者就越接近。</p>
+				<p>复原的过程就是图像退化的逆过程，我们希望最终估计的结果$\hat f(x,y)$尽可能接近原始图像$f(x,y)$。获得 $H$ 和 $\eta$ 的信息越多，两者就越接近。</p>
+				
+				<p>常见的图像复原包括去模糊、去雾等，去模糊在这几年研究成果非常多，也获得了许多非常好的结果，在本站的“有趣的图像处理算法”一文中列举了一个算法效果非常好的算法。在这里不对高级的算法做过多介绍，只以常见的图像模糊为例，讨论最基本的几种算法。</p>
+				
+				<p>对于一个模糊函数来说，既可以把它看成是某种类型的低通滤波器，又可以把它看成是点扩散函数（point spread function，简称PSF）。一个像素点经过该函数之后会扩散到周围的区域，从而影响其他的像素，最后导致的结果是图像变得模糊。</p>
+				<div style="text-align:center">
+					<a href="images/imrestore/Algorithm_bw_filter.png" data-lightbox="image-set" data-title="频率域的巴特沃斯低通滤波器"><img src="images/imrestore/Algorithm_bw_filter.png" height="220"/></a>
+					<span style="margin-right:30px;"></span>
+					<a href="images/imrestore/psf.png" data-lightbox="image-set" data-title="点扩散函数"><img src="images/imrestore/psf.png" height="220"/></a>
+				</div>
+				<p>上图中，左边是将巴特沃斯低通滤波器经过2D FFT变换之后的结果，右边是点扩散函数示意图。</p>
+				
+				<div class="margin_bottom_10"></div>
+				<div class="header_05">逆滤波器</div>
+				<div class="margin_bottom_10"></div>
+				<p>如果已知图像是因为低通滤波器导致的模糊，要复原图像很容易想到求低通滤波器的逆，并该逆作用到模糊图像上，这就称为逆滤波器。将频域下的低通滤波器用B(u,v)表示，那么高通滤波器可以表示为：$${B^{-1}}(u,v) = \left\{ {\matrix{{{1 \over {B(u,v)}}\quad if{1 \over {B(u,v)}} < \gamma }  \cr 
+				{\gamma \quad  \quad \quad else \quad \quad}  \cr } } \right.\label{ref1}$$</p>
+				<p>因为低通滤波器中有许多0和接近于0的系数，因此设定$\gamma$ 这一阈值，防止高通滤波器中出现过大的数。在本文中，我们采用如下空域的低通滤波器来模糊图像：$$ h = {1 \over {16}}\left( {\matrix{
+				   1 & 1 & 1 & 1  \cr 
+				   1 & 1 & 1 & 1  \cr 
+				   1 & 1 & 1 & 1  \cr 
+				   1 & 1 & 1 & 1  \cr } } \right), \nonumber$$</p>
+				   <p>按照公式(\ref{ref1})来计算逆滤波器用来恢复原来的图像。下图中，左边是原图，右边是恢复的结果（$\gamma$=5000）。可以看到结果图跟原图非常接近，计算出来的MSE=3.8639。</p>
+				<div style="text-align:center">
+					<a href="images/imrestore/orig.jpg" data-lightbox="image-set" data-title="原图"><img src="images/imrestore/orig.jpg" height="190"/></a>
+					<a href="images/imrestore/blur.jpg" data-lightbox="image-set" data-title="模糊图像"><img src="images/imrestore/blur.jpg" height="190"/></a>
+					<a href="images/imrestore/blur_res.jpg" data-lightbox="image-set" data-title="逆滤波结果"><img src="images/imrestore/blur_res.jpg" height="190"/></a>
+				</div>
+				<div class="margin_bottom_10"></div>
+				<p>高通滤波器的优势在于能够增强细节，对图像中变化较快的部分非常敏感，比如图像的边缘。但是如果图像中有噪声，高通滤波器同样也会增大这些噪声，最后使得结果难以接受。下面的例子中，在原有的模糊图像上加上了随机的噪声，下图最右边是进行逆变换的结果（$\gamma$=5）：</p>
+				<div style="text-align:center">
+					<a href="images/imrestore/orig.jpg" data-lightbox="image-set" data-title="原图"><img src="images/imrestore/orig.jpg" height="190"/></a>
+					<a href="images/imrestore/blur_noise.jpg" data-lightbox="image-set" data-title="模糊+噪声图像"><img src="images/imrestore/blur_noise.jpg" height="190"/></a>
+					<a href="images/imrestore/blur_noise_res.jpg" data-lightbox="image-set" data-title="逆滤波结果"><img src="images/imrestore/blur_noise_res.jpg" height="190"/></a>
+				</div>
+				<div class="margin_bottom_10"></div>
+				<p>这里计算出来的MSE=2050，虽然图像的边缘变得锐利了，但是图像噪声也放大了。图像噪声越多，为了不过于放大噪声，$\gamma$ 值就要越小，但是$\gamma$ 值越小，去模糊的效果也越差。</p>
+				<p>针对这一情况，另外一种解决方案是迭代求解，</p>
+				
+				<p></p>
 				
 				
+				<div class="margin_bottom_10"></div>
+				<div class="header_05">维纳滤波</div>
+				<div class="margin_bottom_10"></div>
+				
+				<p>常见的图像复原包括去模糊、去雾等。</p>
+				
+				<p></p>
+				
+				
+				<div class="margin_bottom_10"></div>
+				<div class="header_05">小波复原</div>
+				<div class="margin_bottom_10"></div>
+				
+				
+				<div class="margin_bottom_10"></div>
+				<div class="header_05">盲反卷积</div>
+				<div class="margin_bottom_10"></div>
 				
 				<br/>
 				<div class="header_05">参考文献</div>
 				<div class="margin_bottom_10"></div>
 				<p>[1] Gonzalez R C, Woods R E. 冈萨雷斯数字图像处理[J]. 2003.</p>
 				<p>[2] <a href="http://www.owlnet.rice.edu/~elec539/Projects99/BACH/proj2/intro.html" target="_blank">http://www.owlnet.rice.edu/~elec539/Projects99/BACH/proj2/intro.html</a></p>
-				<p>[3] <a href="http://homepages.inf.ed.ac.uk/rbf/CVonline/LOCAL_COPIES/VELDHUIZEN/node15.html" target="_blank">http://homepages.inf.ed.ac.uk/rbf/CVonline/LOCAL_COPIES/VELDHUIZEN/node15.html</a></p>
+				<p>[3] <a href="http://homepages.inf.ed.ac.uk/rbf/CVonline/LOCAL_COPIES/VELDHUIZEN/node15.html" target="_blank">http://homepages.inf.ed.ac.uk/rbf/CVonline/LOCAL_COPIES/VELDHUIZEN/
+				node15.html</a></p>
+				<p>[4] <a href="http://en.wikipedia.org/wiki/Point_spread_function" target="_blank">http://en.wikipedia.org/wiki/Point_spread_function</a></p>
 				
 				<br/>
 				<p style="text-indent:0;text-align:right">Last update: <!-- #BeginDate format:IS1 -->2014-11-20<!-- #EndDate --></p>

@@ -131,15 +131,6 @@ img {
 	background:  url(images/footer_title_bg.png) no-repeat;
 }
 
-.header_06 {
-	clear: both;
-	padding-bottom: 10px;
-	margin-bottom: 10px;
-	font-size: 22px;
-	letter-spacing: 2px;
-	color: #000000;
-	background: url(images/header_01_bg.jpg) left bottom no-repeat;	
-}
 
 table.gridtable {
 	text-align:center;

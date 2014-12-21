@@ -22,7 +22,7 @@ I=G.*H;
 im=abs(ifft2(I));
 
 figure; imshow(im,gray(256));title('blur Result');
-imwrite(uint8(im),'blur_res.jpg');
+imwrite(uint8(im),'blur_inv.jpg');
 
 MSE = mean(mean((double(im) - double(f)).^2,2),1)
 
@@ -45,6 +45,6 @@ I=G.*H;
 im=abs(ifft2(I));
 
 figure; imshow(im,gray(256));title('blur&noise Result');
-imwrite(uint8(im),'blur_noise_res.jpg');
+imwrite(uint8(im),'blur_noise_invres.jpg');
 
 MSE = mean(mean((double(im) - double(f)).^2,2),1)

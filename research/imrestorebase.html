@@ -109,10 +109,21 @@ function clearText(field)
 				</div>
 				<div class="margin_bottom_10"></div>
 				<p>这里计算出来的MSE=2050，虽然图像的边缘变得锐利了，但是图像噪声也放大了。图像噪声越多，为了不过于放大噪声，$\gamma$ 值就要越小，但是$\gamma$ 值越小，去模糊的效果也越差。</p>
-				<p>针对这一情况，另外一种解决方案是迭代求解，</p>
+				<p>针对这一情况，另外一种解决方案是迭代求解：首先根据噪声图像来获得原图像的初始估计，然后，根据迭代方程来更新对原图像的估计。可以用方程表达如下：$${\hat f_0}(x,y) = \lambda g(x,y) \label{ref2},$$ $${\hat f_{k + 1}}(x,y) = {\hat f_k}(x,y) + \lambda (g(x,y) - {\hat f_k}(x,y) * b(x,y))\label{ref3}$$</p>
+				<p>(\ref{ref2}) 式中，${\hat f_0}(x,y)$是对原始图像的初始估计。当估计的值 ${\hat f_k}$ 与原图相似时，${\hat f_k}$ 与 $b(x,y)$ 的卷积的结果将会与 $g(x,y)$ 接近，使得 (\ref{ref3}) 式右边第二项接近于0，从而实现收敛。$\lambda$控制收敛速度。将上面两式在频率域表示为：$${{\hat F}_0}(x,y) = \lambda G(x,y),$$ $${\hat F_{k + 1}}(u,v) = {\hat F_k}(u,v) + \lambda (G(u,v) - {\hat F_k}(x,y)B(x,y))$$</p>
 				
-				<p></p>
+				<p>解出上式中的 ${\hat F_k}(u,v)$ 可得：$$\displaylines{
+				{{\hat F}_{k + 1}}(u,v) = \lambda (G(u,v)[1 + (1 - \lambda B(u,v) +  \cdots  + {(1 - \lambda B(u,v))^k}] \cr 
+				= {{G(u,v)} \over {B(u,v)}}[1 - {(1 - \lambda B(u,v))^{k + 1}}] \cr} $$</p>
+				<p>当$k$趋向无穷大时，${(1 - \lambda B(u,v))^{k + 1}}$趋向于0，所获得的结果就与逆滤波器一样了。在实现该滤波器的时候，$\lambda$ 的取值需满足$|1 - \lambda B(u,v)|<1 $。我们取$\lambda = 0.1$，迭代150次，结果如下：</p>
 				
+				<div style="text-align:center">
+					<a href="images/imrestore/orig.jpg" data-lightbox="image-set" data-title="原图"><img src="images/imrestore/orig.jpg" height="190"/></a>
+					<a href="images/imrestore/blur_noise.jpg" data-lightbox="image-set" data-title="模糊+噪声图像"><img src="images/imrestore/blur_noise.jpg" height="190"/></a>
+					<a href="images/imrestore/deblur_noise_ite_inv_res.jpg" data-lightbox="image-set" data-title="迭代逆滤波结果"><img src="images/imrestore/deblur_noise_ite_inv_res.jpg" height="190"/></a>
+				</div>
+				<div class="margin_bottom_10"></div>
+				<p>上图中，同样最左边是原图，中间是对原图进行模糊，同时加上方差为10的高斯噪声，最右边是对中间图像进行迭代滤波器获得的结果，其中MSE=1171，比直接逆滤波要小。因此，在有噪声的情况下，迭代逆滤波的结果是要好于直接逆滤波的。</p>
 				
 				<div class="margin_bottom_10"></div>
 				<div class="header_05">维纳滤波</div>
